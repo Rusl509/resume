@@ -1,28 +1,30 @@
 <style>
   :root{
-    --bg:#12141C;
-    --ink:#E4E6F0;
-    --ink-muted:#8B90A8;
-    --accent:#6C8EEF;
-    --accent-deep:#97AEFA;
-    --rule:#262A3A;
-    --btn-bg:#191C28;
+    --bg:#0D1117;
+    --panel:#161B22;
+    --ink:#C9D1D9;
+    --ink-muted:#8B949E;
+    --accent:#58A6FF;
+    --accent-deep:#79C0FF;
+    --good:#3FB950;
+    --rule:#30363D;
     --tag-data:#D9A15C;
-    --tag-platform:#3FB5BE;
+    --tag-platform:#79C0FF;
+    --chip-bg:rgba(88,166,255,0.08);
   }
   @media (prefers-color-scheme: light){
     :root{
-      --bg:#F5F6FA; --ink:#1B1E2B; --ink-muted:#5C6178; --accent:#3D5FC4; --accent-deep:#2A46A0; --rule:#DDE1EE; --btn-bg:#EDEFF6;
-      --tag-data:#B4711F; --tag-platform:#0E7C86;
+      --bg:#FFFFFF; --panel:#F6F8FA; --ink:#1F2328; --ink-muted:#59636E; --accent:#0969DA; --accent-deep:#0550AE;
+      --good:#1A7F37; --rule:#D0D7DE; --tag-data:#9A6A1F; --tag-platform:#0969DA; --chip-bg:rgba(9,105,218,0.06);
     }
   }
   :root[data-theme="dark"]{
-    --bg:#12141C; --ink:#E4E6F0; --ink-muted:#8B90A8; --accent:#6C8EEF; --accent-deep:#97AEFA; --rule:#262A3A; --btn-bg:#191C28;
-    --tag-data:#D9A15C; --tag-platform:#3FB5BE;
+    --bg:#0D1117; --panel:#161B22; --ink:#C9D1D9; --ink-muted:#8B949E; --accent:#58A6FF; --accent-deep:#79C0FF;
+    --good:#3FB950; --rule:#30363D; --tag-data:#D9A15C; --tag-platform:#79C0FF; --chip-bg:rgba(88,166,255,0.08);
   }
   :root[data-theme="light"]{
-    --bg:#F5F6FA; --ink:#1B1E2B; --ink-muted:#5C6178; --accent:#3D5FC4; --accent-deep:#2A46A0; --rule:#DDE1EE; --btn-bg:#EDEFF6;
-    --tag-data:#B4711F; --tag-platform:#0E7C86;
+    --bg:#FFFFFF; --panel:#F6F8FA; --ink:#1F2328; --ink-muted:#59636E; --accent:#0969DA; --accent-deep:#0550AE;
+    --good:#1A7F37; --rule:#D0D7DE; --tag-data:#9A6A1F; --tag-platform:#0969DA; --chip-bg:rgba(9,105,218,0.06);
   }
   @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
   *{ box-sizing:border-box; }
@@ -30,88 +32,104 @@
   body{
     background:var(--bg); color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    font-size:15.5px; line-height:1.6; -webkit-font-smoothing:antialiased;
+    font-size:15.5px; line-height:1.65; -webkit-font-smoothing:antialiased;
   }
   .mono{ font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace; }
-  .page{ max-width:760px; margin:0 auto; padding:2.75rem 1.5rem 5rem; }
-  .toolbar{ display:flex; justify-content:flex-end; flex-wrap:wrap; gap:.6rem; max-width:760px; margin:0 auto; padding:1rem 1.5rem 0; }
+  .page{ max-width:780px; margin:0 auto; padding:2.75rem 1.5rem 5rem; }
+  .toolbar{ display:flex; justify-content:flex-end; flex-wrap:wrap; gap:.6rem; max-width:780px; margin:0 auto; padding:1rem 1.5rem 0; }
   .toolbar button{
     font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
     font-size:.72rem; letter-spacing:.03em; text-transform:uppercase;
-    background:var(--btn-bg); color:var(--ink); border:1px solid var(--rule); border-radius:2px;
+    background:var(--panel); color:var(--ink); border:1px solid var(--rule); border-radius:6px;
     padding:.5rem .85rem; cursor:pointer; transition:border-color .15s ease, color .15s ease;
   }
   .toolbar button:hover{ border-color:var(--accent); color:var(--accent-deep); }
   .toolbar button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
-  .toolbar-hint{ max-width:760px; margin:.5rem auto 0; padding:0 1.5rem; font-size:.74rem; color:var(--ink-muted); text-align:right; }
+  .toolbar-hint{ max-width:780px; margin:.5rem auto 0; padding:0 1.5rem; font-size:.74rem; color:var(--ink-muted); text-align:right; }
 
-  header.id{ margin-top:1rem; padding-bottom:1.4rem; border-bottom:2px solid var(--ink); }
+  header.id{ margin-top:1rem; padding-bottom:1.5rem; border-bottom:1px solid var(--rule); }
   h1{
     font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
-    font-size:1.95rem; font-weight:700; letter-spacing:-0.01em; margin:0 0 .2rem; text-wrap:balance;
+    font-size:2.1rem; font-weight:700; letter-spacing:-0.01em; margin:0 0 .25rem; text-wrap:balance;
   }
   .role-title{
     font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
-    font-size:.95rem; font-weight:600; letter-spacing:.02em; color:var(--accent-deep); margin:0 0 .9rem;
+    font-size:1rem; font-weight:600; letter-spacing:.02em; color:var(--accent); margin:0 0 .9rem;
   }
   .contact{ display:flex; flex-wrap:wrap; gap:.4rem 0; font-size:.86rem; color:var(--ink-muted); font-variant-numeric:tabular-nums; }
-  .contact a{ color:var(--ink-muted); text-decoration:none; border-bottom:1px solid transparent; }
-  .contact a:hover{ color:var(--accent-deep); border-bottom-color:var(--accent); }
+  .contact a{ color:var(--accent); text-decoration:underline; text-decoration-color:transparent; }
+  .contact a:hover{ color:var(--accent-deep); text-decoration-color:var(--accent-deep); }
   .contact a:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
   .contact .sep{ margin:0 .55rem; color:var(--rule); }
 
-  section{ margin-top:2.1rem; }
+  section{ margin-top:2.2rem; }
   .eyebrow{
     display:flex; align-items:center; gap:.65rem;
     font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
-    font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-deep); margin:0 0 .9rem;
+    font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin:0 0 .9rem;
   }
+  .eyebrow::before{ content:"\276F"; color:var(--good); font-weight:700; }
   .eyebrow::after{ content:""; flex:1; height:1px; background:var(--rule); }
-  .eyebrow .mark{ width:.5rem; height:.5rem; background:var(--accent); display:inline-block; flex:none; }
 
   .subhead{
     font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
-    font-size:.78rem; color:var(--ink-muted); margin:1.4rem 0 .6rem; letter-spacing:.03em;
+    font-size:.78rem; color:var(--ink-muted); margin:1.5rem 0 .6rem; letter-spacing:.03em;
   }
   .subhead:first-child{ margin-top:0; }
 
   p.summary{ margin:0; font-size:.97rem; color:var(--ink); max-width:68ch; }
 
+  .stats{ display:flex; flex-wrap:wrap; gap:.75rem; margin-top:1.2rem; }
+  .stat{
+    flex:1 1 130px; background:var(--panel); border:1px solid var(--rule); border-radius:8px;
+    padding:.85rem 1rem; min-width:120px;
+  }
+  .stat .num{ font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace; font-size:1.4rem; font-weight:700; color:var(--accent); font-variant-numeric:tabular-nums; }
+  .stat .cap{ font-size:.74rem; color:var(--ink-muted); margin-top:.15rem; }
+
   .tag{
     font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
     font-size:.62rem; font-weight:700; letter-spacing:.08em; padding:.1rem .4rem; border:1px solid currentColor;
-    border-radius:2px; white-space:nowrap;
+    border-radius:4px; white-space:nowrap;
   }
   .tag-data{ color:var(--tag-data); }
   .tag-platform{ color:var(--tag-platform); }
 
-  .skills .row{ display:grid; grid-template-columns:13rem 1fr; gap:.5rem 1rem; padding:.4rem 0 .4rem .65rem; border-bottom:1px solid var(--rule); border-left:2px solid transparent; font-size:.92rem; }
-  .skills .row:last-child{ border-bottom:none; }
-  .skills .row.row-data{ border-left-color:var(--tag-data); }
-  .skills .row.row-platform{ border-left-color:var(--tag-platform); }
-  .skills .label{
+  .skill-group{ margin:0 0 1.1rem; }
+  .skill-group:last-child{ margin-bottom:0; }
+  .skill-group .cat{
     font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
-    font-size:.72rem; letter-spacing:.03em; text-transform:uppercase; color:var(--ink-muted); padding-top:.15rem;
+    font-size:.72rem; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-muted); margin:0 0 .5rem;
+    display:flex; align-items:center; gap:.4rem;
   }
-  .skills .value{ color:var(--ink); }
-  @media (max-width:560px){ .skills .row{ grid-template-columns:1fr; gap:.2rem; } }
+  .skill-group .cat .dot{ width:.4rem; height:.4rem; border-radius:50%; display:inline-block; flex:none; }
+  .skill-group.domain-data .cat .dot{ background:var(--tag-data); }
+  .skill-group.domain-platform .cat .dot{ background:var(--tag-platform); }
+  .skill-group.domain-both .cat .dot{ background:var(--accent); }
+  .chips{ display:flex; flex-wrap:wrap; gap:.4rem; }
+  .chip{
+    font-size:.82rem; padding:.28rem .6rem; border-radius:6px; border:1px solid var(--rule);
+    background:var(--chip-bg); color:var(--ink); white-space:nowrap;
+  }
 
-  .job{ padding:1.1rem 0; border-bottom:1px solid var(--rule); break-inside:avoid; }
+  .job{ padding:1.2rem 0; border-bottom:1px solid var(--rule); break-inside:avoid; }
   .job:last-child{ border-bottom:none; }
   .job-head{ display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:.3rem 1rem; }
-  .job-role{ font-weight:700; font-size:1.02rem; }
+  .job-role{ font-weight:700; font-size:1.03rem; }
   .job-role .tag{ margin-left:.5rem; vertical-align:middle; }
   .job-company{ color:var(--ink-muted); font-size:.92rem; }
   .job-dates{
     font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
     font-size:.78rem; color:var(--ink-muted); font-variant-numeric:tabular-nums; white-space:nowrap;
+    display:flex; align-items:center; gap:.4rem;
   }
-  .job-context{ font-size:.88rem; color:var(--ink-muted); margin:.3rem 0 .6rem; max-width:68ch; }
+  .job-dates .dot{ width:.42rem; height:.42rem; border-radius:50%; background:var(--good); display:inline-block; }
+  .job-context{ font-size:.88rem; color:var(--ink-muted); margin:.35rem 0 .6rem; max-width:68ch; }
   ul.bullets{ list-style:none; margin:.5rem 0 0; padding:0; }
-  ul.bullets li{ display:flex; gap:.6rem; margin:.4rem 0; font-size:.93rem; }
+  ul.bullets li{ display:flex; gap:.6rem; margin:.45rem 0; font-size:.93rem; }
   ul.bullets li::before{ content:"\276F"; color:var(--accent); font-weight:700; flex:none; }
 
-  .edu-row, .cert-row{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:.2rem 1rem; padding:.5rem 0; border-bottom:1px solid var(--rule); font-size:.92rem; }
+  .edu-row, .cert-row{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:.2rem 1rem; padding:.6rem 0; border-bottom:1px solid var(--rule); font-size:.92rem; }
   .edu-row:last-child, .cert-row:last-child{ border-bottom:none; }
   .edu-main, .cert-main{ font-weight:700; }
   .edu-sub, .cert-sub{ color:var(--ink-muted); font-size:.86rem; }
@@ -133,16 +151,17 @@
   body.plain-mode .page{ display:none; }
   body.plain-mode #ats-text-en.active, body.plain-mode #ats-text-ru.active{
     display:block; font-family:Arial,Helvetica,sans-serif; font-size:11pt; line-height:1.55;
-    color:#111111; background:#ffffff; white-space:pre-wrap; max-width:760px; margin:0 auto; padding:1.5rem 1.5rem 4rem;
+    color:#111111; background:#ffffff; white-space:pre-wrap; max-width:780px; margin:0 auto; padding:1.5rem 1.5rem 4rem;
   }
 
   @media print{
-    :root{ --bg:#ffffff; --ink:#111111; --ink-muted:#444444; --rule:#dddddd; }
+    :root{ --bg:#ffffff; --panel:#ffffff; --ink:#111111; --ink-muted:#444444; --rule:#dddddd; --accent:#111111; }
     .toolbar, .toolbar-hint{ display:none; }
     body{ background:#fff; }
     .page{ padding:0; max-width:100%; }
     a{ text-decoration:none; color:inherit; }
     .job{ break-inside:avoid; }
+    .chip{ background:#fff; }
     body.plain-mode #ats-text-en.active, body.plain-mode #ats-text-ru.active{ padding:0; }
   }
 </style>
@@ -153,7 +172,7 @@
   <button id="print-btn" type="button" data-en="Print / Save as PDF" data-ru="Печать / Сохранить как PDF">Print / Save as PDF</button>
   <button id="copy-ats" type="button">Copy ATS-safe text</button>
 </div>
-<p class="toolbar-hint" data-en="This page covers both specializations — DATA and PLATFORM tags mark which track each item belongs to." data-ru="Эта страница объединяет обе специализации — метки DATA и PLATFORM показывают, к какому направлению относится пункт.">This page covers both specializations — DATA and PLATFORM tags mark which track each item belongs to.</p>
+<p class="toolbar-hint" data-en="DATA and PLATFORM tags mark which track each item belongs to." data-ru="Метки DATA и PLATFORM показывают, к какому направлению относится пункт.">DATA and PLATFORM tags mark which track each item belongs to.</p>
 
 <div class="page">
   <header class="id">
@@ -171,40 +190,123 @@
   </header>
 
   <section>
-    <h2 class="eyebrow"><span class="mark"></span><span data-en="Summary" data-ru="О себе">Summary</span></h2>
+    <h2 class="eyebrow"><span data-en="Summary" data-ru="О себе">Summary</span></h2>
     <p class="summary" data-en="Engineer with 4+ years spanning both data platform architecture and infrastructure automation — currently running two concurrent tracks: building petabyte-scale lakehouse platforms (Delta Lake, Apache Iceberg; 7+ PB, 30+ Spark pipelines) for a top-3 national retail chain, and automating Kubernetes, CI/CD, and cloud infrastructure (Terraform, Ansible, a self-managed 40-node kubeadm cluster) for a Top-5 national bank. Certified Kubernetes Administrator (CKA), Application Developer (CKAD), and Docker Certified Associate (DCA). Comfortable owning a problem end-to-end, from data pipeline design to the infrastructure it runs on." data-ru="Инженер с опытом 4+ года на стыке архитектуры платформ данных и автоматизации инфраструктуры — сейчас веду два параллельных проекта: строю lakehouse-платформы петабайтного масштаба (Delta Lake, Apache Iceberg; 7+ ПБ, 30+ пайплайнов на Spark) для розничной сети из топ-3 в России и автоматизирую Kubernetes, CI/CD и облачную инфраструктуру (Terraform, Ansible, самостоятельно администрируемый кластер kubeadm из 40 узлов) для банка из топ-5 в России. Certified Kubernetes Administrator (CKA), Application Developer (CKAD) и Docker Certified Associate (DCA). Комфортно беру на себя задачу целиком — от проектирования пайплайна данных до инфраструктуры, на которой он работает.">Engineer with 4+ years spanning both data platform architecture and infrastructure automation — currently running two concurrent tracks: building petabyte-scale lakehouse platforms (Delta Lake, Apache Iceberg; 7+ PB, 30+ Spark pipelines) for a top-3 national retail chain, and automating Kubernetes, CI/CD, and cloud infrastructure (Terraform, Ansible, a self-managed 40-node kubeadm cluster) for a Top-5 national bank. Certified Kubernetes Administrator (CKA), Application Developer (CKAD), and Docker Certified Associate (DCA). Comfortable owning a problem end-to-end, from data pipeline design to the infrastructure it runs on.</p>
+    <div class="stats">
+      <div class="stat"><div class="num">7+ PB</div><div class="cap" data-en="lakehouse data managed" data-ru="данных под управлением (lakehouse)">lakehouse data managed</div></div>
+      <div class="stat"><div class="num">40</div><div class="cap" data-en="node K8s cluster (banking)" data-ru="узлов в K8s-кластере (банк)">node K8s cluster (banking)</div></div>
+      <div class="stat"><div class="num">3</div><div class="cap" data-en="platform certifications" data-ru="платформенных сертификата">platform certifications</div></div>
+      <div class="stat"><div class="num">4+</div><div class="cap" data-en="years experience" data-ru="года опыта">years experience</div></div>
+    </div>
   </section>
 
   <section class="skills">
-    <h2 class="eyebrow"><span class="mark"></span><span data-en="Skills" data-ru="Навыки">Skills</span></h2>
-    <div class="row row-both"><div class="label" data-en="Languages" data-ru="Языки программирования">Languages</div><div class="value" data-en="Python, SQL, Java/Scala (working knowledge)" data-ru="Python, SQL, Java/Scala (базовый уровень)">Python, SQL, Java/Scala (working knowledge)</div></div>
-    <div class="row row-data"><div class="label" data-en="Distributed Processing" data-ru="Распределённая обработка данных">Distributed Processing</div><div class="value">Apache Spark, Spark Streaming, Hadoop, Hive</div></div>
-    <div class="row row-data"><div class="label" data-en="Lakehouse &amp; Formats" data-ru="Lakehouse и форматы таблиц">Lakehouse &amp; Formats</div><div class="value">Delta Lake, Apache Iceberg</div></div>
-    <div class="row row-data"><div class="label" data-en="Query &amp; Warehousing" data-ru="Query-движки и хранилища">Query &amp; Warehousing</div><div class="value">Trino, Greenplum, PostgreSQL</div></div>
-    <div class="row row-data"><div class="label" data-en="Orchestration &amp; Transformation" data-ru="Оркестрация и трансформация">Orchestration &amp; Transformation</div><div class="value">Apache Airflow, dbt</div></div>
-    <div class="row row-data"><div class="label" data-en="Data Quality &amp; Lineage" data-ru="Качество и происхождение данных">Data Quality &amp; Lineage</div><div class="value">Great Expectations, pydq, Spline, ArangoDB, OMD</div></div>
-    <div class="row row-data"><div class="label" data-en="Streaming" data-ru="Потоковая обработка">Streaming</div><div class="value">Apache Kafka</div></div>
-    <div class="row row-platform"><div class="label" data-en="IaC &amp; Automation" data-ru="IaC и автоматизация">IaC &amp; Automation</div><div class="value">Terraform, Ansible, Bash</div></div>
-    <div class="row row-platform"><div class="label" data-en="Containers &amp; Orchestration" data-ru="Контейнеры и оркестрация">Containers &amp; Orchestration</div><div class="value" data-en="Docker (DCA certified), Docker Swarm, Kubernetes (CKA, CKAD certified; kubeadm), Helm" data-ru="Docker (сертификат DCA), Docker Swarm, Kubernetes (сертификаты CKA, CKAD; kubeadm), Helm">Docker (DCA certified), Docker Swarm, Kubernetes (CKA, CKAD certified; kubeadm), Helm</div></div>
-    <div class="row row-platform"><div class="label" data-en="CI/CD &amp; GitOps" data-ru="CI/CD и GitOps">CI/CD &amp; GitOps</div><div class="value">GitLab CI/CD, Jenkins, ArgoCD, SonarQube</div></div>
-    <div class="row row-both"><div class="label" data-en="Cloud" data-ru="Облако">Cloud</div><div class="value">AWS, Yandex Cloud</div></div>
-    <div class="row row-platform"><div class="label" data-en="AI/ML Infrastructure" data-ru="Инфраструктура для AI/ML">AI/ML Infrastructure</div><div class="value" data-en="Ollama, vLLM (LLM inference serving)" data-ru="Ollama, vLLM (обслуживание LLM-инференса)">Ollama, vLLM (LLM inference serving)</div></div>
-    <div class="row row-platform"><div class="label" data-en="Monitoring &amp; Observability" data-ru="Мониторинг и observability">Monitoring &amp; Observability</div><div class="value">Grafana, Loki, Prometheus</div></div>
-    <div class="row row-platform"><div class="label" data-en="Security &amp; Compliance" data-ru="Безопасность и compliance">Security &amp; Compliance</div><div class="value" data-en="Server hardening (banking-grade compliance), Ansible config management" data-ru="Харденинг серверов (банковский уровень compliance), управление конфигурацией через Ansible">Server hardening (banking-grade compliance), Ansible config management</div></div>
-    <div class="row row-data"><div class="label" data-en="APIs &amp; Serving" data-ru="API и сервисы">APIs &amp; Serving</div><div class="value">FastAPI, REST</div></div>
-    <div class="row row-data"><div class="label" data-en="BI" data-ru="BI">BI</div><div class="value">Apache Superset</div></div>
-    <div class="row row-both"><div class="label" data-en="Databases" data-ru="Базы данных">Databases</div><div class="value">PostgreSQL, Greenplum</div></div>
-    <div class="row row-both"><div class="label" data-en="Tools" data-ru="Инструменты">Tools</div><div class="value" data-en="Git, Jira, self-hosted GitLab administration, Bash, Linux" data-ru="Git, Jira, администрирование self-hosted GitLab, Bash, Linux">Git, Jira, self-hosted GitLab administration, Bash, Linux</div></div>
+    <h2 class="eyebrow"><span data-en="Skills" data-ru="Навыки">Skills</span></h2>
+
+    <div class="skill-group domain-both">
+      <div class="cat"><span class="dot"></span><span data-en="Languages" data-ru="Языки программирования">Languages</span></div>
+      <div class="chips"><span class="chip">Python</span><span class="chip">SQL</span><span class="chip" data-en="Java/Scala (working knowledge)" data-ru="Java/Scala (базовый уровень)">Java/Scala (working knowledge)</span></div>
+    </div>
+
+    <div class="skill-group domain-data">
+      <div class="cat"><span class="dot"></span><span data-en="Distributed Processing" data-ru="Распределённая обработка данных">Distributed Processing</span></div>
+      <div class="chips"><span class="chip">Apache Spark</span><span class="chip">Spark Streaming</span><span class="chip">Hadoop</span><span class="chip">Hive</span></div>
+    </div>
+
+    <div class="skill-group domain-data">
+      <div class="cat"><span class="dot"></span><span data-en="Lakehouse &amp; Formats" data-ru="Lakehouse и форматы таблиц">Lakehouse &amp; Formats</span></div>
+      <div class="chips"><span class="chip">Delta Lake</span><span class="chip">Apache Iceberg</span></div>
+    </div>
+
+    <div class="skill-group domain-data">
+      <div class="cat"><span class="dot"></span><span data-en="Query &amp; Warehousing" data-ru="Query-движки и хранилища">Query &amp; Warehousing</span></div>
+      <div class="chips"><span class="chip">Trino</span><span class="chip">Greenplum</span><span class="chip">PostgreSQL</span></div>
+    </div>
+
+    <div class="skill-group domain-data">
+      <div class="cat"><span class="dot"></span><span data-en="Orchestration &amp; Transformation" data-ru="Оркестрация и трансформация">Orchestration &amp; Transformation</span></div>
+      <div class="chips"><span class="chip">Apache Airflow</span><span class="chip">dbt</span></div>
+    </div>
+
+    <div class="skill-group domain-data">
+      <div class="cat"><span class="dot"></span><span data-en="Data Quality &amp; Lineage" data-ru="Качество и происхождение данных">Data Quality &amp; Lineage</span></div>
+      <div class="chips"><span class="chip">Great Expectations</span><span class="chip">pydq</span><span class="chip">Spline</span><span class="chip">ArangoDB</span><span class="chip">OMD</span></div>
+    </div>
+
+    <div class="skill-group domain-data">
+      <div class="cat"><span class="dot"></span><span data-en="Streaming" data-ru="Потоковая обработка">Streaming</span></div>
+      <div class="chips"><span class="chip">Apache Kafka</span></div>
+    </div>
+
+    <div class="skill-group domain-platform">
+      <div class="cat"><span class="dot"></span><span data-en="IaC &amp; Automation" data-ru="IaC и автоматизация">IaC &amp; Automation</span></div>
+      <div class="chips"><span class="chip">Terraform</span><span class="chip">Ansible</span><span class="chip">Bash</span></div>
+    </div>
+
+    <div class="skill-group domain-platform">
+      <div class="cat"><span class="dot"></span><span data-en="Containers &amp; Orchestration" data-ru="Контейнеры и оркестрация">Containers &amp; Orchestration</span></div>
+      <div class="chips">
+        <span class="chip" data-en="Docker (DCA certified)" data-ru="Docker (сертификат DCA)">Docker (DCA certified)</span>
+        <span class="chip">Docker Swarm</span>
+        <span class="chip" data-en="Kubernetes (CKA, CKAD certified; kubeadm)" data-ru="Kubernetes (сертификаты CKA, CKAD; kubeadm)">Kubernetes (CKA, CKAD certified; kubeadm)</span>
+        <span class="chip">Helm</span>
+      </div>
+    </div>
+
+    <div class="skill-group domain-platform">
+      <div class="cat"><span class="dot"></span><span data-en="CI/CD &amp; GitOps" data-ru="CI/CD и GitOps">CI/CD &amp; GitOps</span></div>
+      <div class="chips"><span class="chip">GitLab CI/CD</span><span class="chip">Jenkins</span><span class="chip">ArgoCD</span><span class="chip">SonarQube</span></div>
+    </div>
+
+    <div class="skill-group domain-both">
+      <div class="cat"><span class="dot"></span><span data-en="Cloud" data-ru="Облако">Cloud</span></div>
+      <div class="chips"><span class="chip">AWS</span><span class="chip">Yandex Cloud</span></div>
+    </div>
+
+    <div class="skill-group domain-platform">
+      <div class="cat"><span class="dot"></span><span data-en="AI/ML Infrastructure" data-ru="Инфраструктура для AI/ML">AI/ML Infrastructure</span></div>
+      <div class="chips"><span class="chip">Ollama</span><span class="chip" data-en="vLLM (LLM inference serving)" data-ru="vLLM (обслуживание LLM-инференса)">vLLM (LLM inference serving)</span></div>
+    </div>
+
+    <div class="skill-group domain-platform">
+      <div class="cat"><span class="dot"></span><span data-en="Monitoring &amp; Observability" data-ru="Мониторинг и observability">Monitoring &amp; Observability</span></div>
+      <div class="chips"><span class="chip">Grafana</span><span class="chip">Loki</span><span class="chip">Prometheus</span></div>
+    </div>
+
+    <div class="skill-group domain-platform">
+      <div class="cat"><span class="dot"></span><span data-en="Security &amp; Compliance" data-ru="Безопасность и compliance">Security &amp; Compliance</span></div>
+      <div class="chips"><span class="chip" data-en="Server hardening (banking-grade)" data-ru="Харденинг серверов (банковский уровень)">Server hardening (banking-grade)</span><span class="chip">Ansible config management</span></div>
+    </div>
+
+    <div class="skill-group domain-data">
+      <div class="cat"><span class="dot"></span><span data-en="APIs &amp; Serving" data-ru="API и сервисы">APIs &amp; Serving</span></div>
+      <div class="chips"><span class="chip">FastAPI</span><span class="chip">REST</span></div>
+    </div>
+
+    <div class="skill-group domain-data">
+      <div class="cat"><span class="dot"></span><span data-en="BI" data-ru="BI">BI</span></div>
+      <div class="chips"><span class="chip">Apache Superset</span></div>
+    </div>
+
+    <div class="skill-group domain-both">
+      <div class="cat"><span class="dot"></span><span data-en="Databases" data-ru="Базы данных">Databases</span></div>
+      <div class="chips"><span class="chip">PostgreSQL</span><span class="chip">Greenplum</span></div>
+    </div>
+
+    <div class="skill-group domain-both">
+      <div class="cat"><span class="dot"></span><span data-en="Tools" data-ru="Инструменты">Tools</span></div>
+      <div class="chips"><span class="chip">Git</span><span class="chip">Jira</span><span class="chip" data-en="self-hosted GitLab admin" data-ru="администрирование self-hosted GitLab">self-hosted GitLab admin</span><span class="chip">Bash</span><span class="chip">Linux</span></div>
+    </div>
   </section>
 
   <section>
-    <h2 class="eyebrow"><span class="mark"></span><span data-en="Experience" data-ru="Опыт работы">Experience</span></h2>
+    <h2 class="eyebrow"><span data-en="Experience" data-ru="Опыт работы">Experience</span></h2>
     <p class="subhead" data-en="Currently balancing two concurrent engagements:" data-ru="Сейчас веду два параллельных проекта:">Currently balancing two concurrent engagements:</p>
 
     <div class="job">
       <div class="job-head">
         <div><span class="job-role" data-en="Senior Data Engineer" data-ru="Старший дата-инженер">Senior Data Engineer</span><span class="tag tag-data">DATA</span> &mdash; <span class="job-company" data-en="Magnit Tech (Top-3 National Retail Chain), Moscow (Remote)" data-ru="Magnit Tech (ритейл-сеть из топ-3 в России), Москва (удалённо)">Magnit Tech (Top-3 National Retail Chain), Moscow (Remote)</span></div>
-        <div class="job-dates" data-en="Sep 2024 – Present" data-ru="сен 2024 – наст. время">Sep 2024 – Present</div>
+        <div class="job-dates"><span class="dot"></span><span data-en="Sep 2024 – Present" data-ru="сен 2024 – наст. время">Sep 2024 – Present</span></div>
       </div>
       <p class="job-context" data-en="Own lakehouse architecture end-to-end across two parallel data platforms serving analytics and ML consumers." data-ru="Полностью отвечаю за архитектуру lakehouse на двух параллельных платформах данных для аналитики и ML.">Own lakehouse architecture end-to-end across two parallel data platforms serving analytics and ML consumers.</p>
       <ul class="bullets">
@@ -223,7 +325,7 @@
     <div class="job">
       <div class="job-head">
         <div><span class="job-role" data-en="DevOps Engineer" data-ru="DevOps-инженер">DevOps Engineer</span><span class="tag tag-platform">PLATFORM</span> &mdash; <span class="job-company" data-en="DUC (IT Consulting), Remote" data-ru="DUC (ИТ-консалтинг), удалённо">DUC (IT Consulting), Remote</span></div>
-        <div class="job-dates" data-en="Aug 2024 – Present" data-ru="авг 2024 – наст. время">Aug 2024 – Present</div>
+        <div class="job-dates"><span class="dot"></span><span data-en="Aug 2024 – Present" data-ru="авг 2024 – наст. время">Aug 2024 – Present</span></div>
       </div>
       <p class="job-context" data-en="Current engagement: Top-5 national bank (since Jun 2025), embedded in an 8-person cross-functional delivery team (1 frontend, 4 backend, 1 PM, 2 DevOps)." data-ru="Текущий проект: банк из топ-5 в России (с июня 2025), в составе кросс-функциональной команды из 8 человек (1 frontend, 4 backend, 1 PM, 2 DevOps).">Current engagement: Top-5 national bank (since Jun 2025), embedded in an 8-person cross-functional delivery team (1 frontend, 4 backend, 1 PM, 2 DevOps).</p>
       <ul class="bullets">
@@ -239,6 +341,21 @@
     </div>
 
     <p class="subhead" data-en="Earlier roles" data-ru="Предыдущий опыт">Earlier roles</p>
+
+    <div class="job">
+      <div class="job-head">
+        <div><span class="job-role" data-en="Data Platform Engineer" data-ru="Инженер платформы данных">Data Platform Engineer</span><span class="tag tag-data">DATA</span><span class="tag tag-platform">PLATFORM</span> &mdash; <span class="job-company" data-en="Early-stage startup, Tashkent, Uzbekistan" data-ru="Стартап ранней стадии, Ташкент, Узбекистан">Early-stage startup, Tashkent, Uzbekistan</span></div>
+        <div class="job-dates" data-en="Jan 2024 – Jun 2024 (Part-time)" data-ru="янв 2024 – июн 2024 (частичная занятость)">Jan 2024 – Jun 2024 (Part-time)</div>
+      </div>
+      <p class="job-context" data-en="Brought in to design the company's first data platform from scratch and establish engineering practices for the founding team." data-ru="Был приглашён спроектировать первую платформу данных компании с нуля и заложить инженерные практики для команды основателей.">Brought in to design the company's first data platform from scratch and establish engineering practices for the founding team.</p>
+      <ul class="bullets">
+        <li data-en="Designed and built a data platform from scratch, covering ingestion, storage, and processing for the company's early product analytics — roughly 300 GB of operational data across 15+ source tables." data-ru="Спроектировал и построил платформу данных с нуля, включая приём, хранение и обработку данных для ранней продуктовой аналитики компании — около 300 ГБ операционных данных из 15+ источников.">Designed and built a data platform from scratch, covering ingestion, storage, and processing for the company's early product analytics — roughly 300 GB of operational data across 15+ source tables.</li>
+        <li data-en="Performed sizing and capacity calculations for compute and storage, right-sizing infrastructure to the startup's budget and avoiding early over-provisioning." data-ru="Выполнил расчёт сайзинга и ёмкости для вычислительных ресурсов и хранилища, подобрав инфраструктуру под бюджет стартапа и избежав избыточного резервирования на раннем этапе.">Performed sizing and capacity calculations for compute and storage, right-sizing infrastructure to the startup's budget and avoiding early over-provisioning.</li>
+        <li data-en="Installed and configured a 3-node Kubernetes cluster (kubeadm) from scratch to host the platform's core services." data-ru="Установил и настроил с нуля кластер Kubernetes из 3 узлов (kubeadm) для размещения ключевых сервисов платформы.">Installed and configured a 3-node Kubernetes cluster (kubeadm) from scratch to host the platform's core services.</li>
+        <li data-en="Deployed the platform's ingestion, storage, and processing components onto Kubernetes, delivering the startup's first production-grade infrastructure." data-ru="Развернул компоненты приёма, хранения и обработки данных платформы в Kubernetes, реализовав первую production-инфраструктуру стартапа.">Deployed the platform's ingestion, storage, and processing components onto Kubernetes, delivering the startup's first production-grade infrastructure.</li>
+        <li data-en="Defined the system architecture and development methodology later adopted by the founding engineering team (~4 engineers)." data-ru="Определил архитектуру системы и методологию разработки, впоследствии принятую командой из ~4 инженеров-основателей.">Defined the system architecture and development methodology later adopted by the founding engineering team (~4 engineers).</li>
+      </ul>
+    </div>
 
     <div class="job">
       <div class="job-head">
@@ -280,7 +397,7 @@
   </section>
 
   <section>
-    <h2 class="eyebrow"><span class="mark"></span><span data-en="Education" data-ru="Образование">Education</span></h2>
+    <h2 class="eyebrow"><span data-en="Education" data-ru="Образование">Education</span></h2>
     <div class="edu-row">
       <div>
         <div class="edu-main" data-en="B.S., Business Informatics — Systems Analyst qualification" data-ru="Бакалавр, Бизнес-информатика — квалификация «Системный аналитик»">B.S., Business Informatics — Systems Analyst qualification</div>
@@ -291,7 +408,7 @@
   </section>
 
   <section>
-    <h2 class="eyebrow"><span class="mark"></span><span data-en="Certifications" data-ru="Сертификаты">Certifications</span></h2>
+    <h2 class="eyebrow"><span data-en="Certifications" data-ru="Сертификаты">Certifications</span></h2>
     <div class="cert-row"><div class="cert-main">Certified Kubernetes Administrator (CKA)</div><div class="cert-date" data-en="The Linux Foundation / CNCF, May 2026" data-ru="The Linux Foundation / CNCF, май 2026">The Linux Foundation / CNCF, May 2026</div></div>
     <div class="cert-row"><div class="cert-main">Certified Kubernetes Application Developer (CKAD)</div><div class="cert-date" data-en="The Linux Foundation / CNCF, May 2026" data-ru="The Linux Foundation / CNCF, май 2026">The Linux Foundation / CNCF, May 2026</div></div>
     <div class="cert-row"><div class="cert-main">Docker Certified Associate (DCA)</div><div class="cert-date" data-en="Mirantis, May 2026" data-ru="Mirantis, май 2026">Mirantis, May 2026</div></div>
@@ -301,7 +418,7 @@
   </section>
 
   <section>
-    <h2 class="eyebrow"><span class="mark"></span><span data-en="Languages" data-ru="Языки">Languages</span></h2>
+    <h2 class="eyebrow"><span data-en="Languages" data-ru="Языки">Languages</span></h2>
     <p class="lang-line" data-en="Russian — Native • English — B2 (Upper-Intermediate)" data-ru="Русский — родной • Английский — B2 (выше среднего)">Russian — Native • English — B2 (Upper-Intermediate)</p>
   </section>
 
@@ -404,6 +521,23 @@ Current engagement: Top-5 national bank (since Jun 2025), embedded in an
 • Mentor 1 DevOps engineer through paired implementation work.
 
 Earlier roles:
+
+Data Platform Engineer [DATA][PLATFORM] — Early-stage startup, Tashkent, Uzbekistan
+Jan 2024 – Jun 2024 (Part-time)
+Brought in to design the company's first data platform from scratch and
+establish engineering practices for the founding team.
+• Designed and built a data platform from scratch, covering ingestion,
+  storage, and processing for the company's early product analytics —
+  roughly 300 GB of operational data across 15+ source tables.
+• Performed sizing and capacity calculations for compute and storage,
+  right-sizing infrastructure to the startup's budget and avoiding early
+  over-provisioning.
+• Installed and configured a 3-node Kubernetes cluster (kubeadm) from scratch
+  to host the platform's core services.
+• Deployed the platform's ingestion, storage, and processing components onto
+  Kubernetes, delivering the startup's first production-grade infrastructure.
+• Defined the system architecture and development methodology later adopted
+  by the founding engineering team (~4 engineers).
 
 Data Engineer [DATA] — Neoflex, Moscow, Russia
 Jun 2023 – Sep 2024
@@ -551,6 +685,23 @@ DevOps-инженер [PLATFORM] — DUC (ИТ-консалтинг), удалё
 • Наставляю 1 DevOps-инженера через совместную реализацию задач.
 
 Предыдущий опыт:
+
+Инженер платформы данных [DATA][PLATFORM] — Стартап ранней стадии, Ташкент, Узбекистан
+янв 2024 – июн 2024 (частичная занятость)
+Был приглашён спроектировать первую платформу данных компании с нуля и
+заложить инженерные практики для команды основателей.
+• Спроектировал и построил платформу данных с нуля, включая приём, хранение
+  и обработку данных для ранней продуктовой аналитики компании — около
+  300 ГБ операционных данных из 15+ источников.
+• Выполнил расчёт сайзинга и ёмкости для вычислительных ресурсов и
+  хранилища, подобрав инфраструктуру под бюджет стартапа и избежав
+  избыточного резервирования на раннем этапе.
+• Установил и настроил с нуля кластер Kubernetes из 3 узлов (kubeadm) для
+  размещения ключевых сервисов платформы.
+• Развернул компоненты приёма, хранения и обработки данных платформы в
+  Kubernetes, реализовав первую production-инфраструктуру стартапа.
+• Определил архитектуру системы и методологию разработки, впоследствии
+  принятую командой из ~4 инженеров-основателей.
 
 Дата-инженер [DATA] — Неофлекс, Москва
 июн 2023 – сен 2024
