@@ -1,0 +1,662 @@
+<style>
+  :root{
+    --bg:#12141C;
+    --ink:#E4E6F0;
+    --ink-muted:#8B90A8;
+    --accent:#6C8EEF;
+    --accent-deep:#97AEFA;
+    --rule:#262A3A;
+    --btn-bg:#191C28;
+    --tag-data:#D9A15C;
+    --tag-platform:#3FB5BE;
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg:#F5F6FA; --ink:#1B1E2B; --ink-muted:#5C6178; --accent:#3D5FC4; --accent-deep:#2A46A0; --rule:#DDE1EE; --btn-bg:#EDEFF6;
+      --tag-data:#B4711F; --tag-platform:#0E7C86;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12141C; --ink:#E4E6F0; --ink-muted:#8B90A8; --accent:#6C8EEF; --accent-deep:#97AEFA; --rule:#262A3A; --btn-bg:#191C28;
+    --tag-data:#D9A15C; --tag-platform:#3FB5BE;
+  }
+  :root[data-theme="light"]{
+    --bg:#F5F6FA; --ink:#1B1E2B; --ink-muted:#5C6178; --accent:#3D5FC4; --accent-deep:#2A46A0; --rule:#DDE1EE; --btn-bg:#EDEFF6;
+    --tag-data:#B4711F; --tag-platform:#0E7C86;
+  }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:15.5px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  .mono{ font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace; }
+  .page{ max-width:760px; margin:0 auto; padding:2.75rem 1.5rem 5rem; }
+  .toolbar{ display:flex; justify-content:flex-end; flex-wrap:wrap; gap:.6rem; max-width:760px; margin:0 auto; padding:1rem 1.5rem 0; }
+  .toolbar button{
+    font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    font-size:.72rem; letter-spacing:.03em; text-transform:uppercase;
+    background:var(--btn-bg); color:var(--ink); border:1px solid var(--rule); border-radius:2px;
+    padding:.5rem .85rem; cursor:pointer; transition:border-color .15s ease, color .15s ease;
+  }
+  .toolbar button:hover{ border-color:var(--accent); color:var(--accent-deep); }
+  .toolbar button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .toolbar-hint{ max-width:760px; margin:.5rem auto 0; padding:0 1.5rem; font-size:.74rem; color:var(--ink-muted); text-align:right; }
+
+  header.id{ margin-top:1rem; padding-bottom:1.4rem; border-bottom:2px solid var(--ink); }
+  h1{
+    font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    font-size:1.95rem; font-weight:700; letter-spacing:-0.01em; margin:0 0 .2rem; text-wrap:balance;
+  }
+  .role-title{
+    font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    font-size:.95rem; font-weight:600; letter-spacing:.02em; color:var(--accent-deep); margin:0 0 .9rem;
+  }
+  .contact{ display:flex; flex-wrap:wrap; gap:.4rem 0; font-size:.86rem; color:var(--ink-muted); font-variant-numeric:tabular-nums; }
+  .contact a{ color:var(--ink-muted); text-decoration:none; border-bottom:1px solid transparent; }
+  .contact a:hover{ color:var(--accent-deep); border-bottom-color:var(--accent); }
+  .contact a:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .contact .sep{ margin:0 .55rem; color:var(--rule); }
+
+  section{ margin-top:2.1rem; }
+  .eyebrow{
+    display:flex; align-items:center; gap:.65rem;
+    font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-deep); margin:0 0 .9rem;
+  }
+  .eyebrow::after{ content:""; flex:1; height:1px; background:var(--rule); }
+  .eyebrow .mark{ width:.5rem; height:.5rem; background:var(--accent); display:inline-block; flex:none; }
+
+  .subhead{
+    font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    font-size:.78rem; color:var(--ink-muted); margin:1.4rem 0 .6rem; letter-spacing:.03em;
+  }
+  .subhead:first-child{ margin-top:0; }
+
+  p.summary{ margin:0; font-size:.97rem; color:var(--ink); max-width:68ch; }
+
+  .tag{
+    font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    font-size:.62rem; font-weight:700; letter-spacing:.08em; padding:.1rem .4rem; border:1px solid currentColor;
+    border-radius:2px; white-space:nowrap;
+  }
+  .tag-data{ color:var(--tag-data); }
+  .tag-platform{ color:var(--tag-platform); }
+
+  .skills .row{ display:grid; grid-template-columns:13rem 1fr; gap:.5rem 1rem; padding:.4rem 0 .4rem .65rem; border-bottom:1px solid var(--rule); border-left:2px solid transparent; font-size:.92rem; }
+  .skills .row:last-child{ border-bottom:none; }
+  .skills .row.row-data{ border-left-color:var(--tag-data); }
+  .skills .row.row-platform{ border-left-color:var(--tag-platform); }
+  .skills .label{
+    font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    font-size:.72rem; letter-spacing:.03em; text-transform:uppercase; color:var(--ink-muted); padding-top:.15rem;
+  }
+  .skills .value{ color:var(--ink); }
+  @media (max-width:560px){ .skills .row{ grid-template-columns:1fr; gap:.2rem; } }
+
+  .job{ padding:1.1rem 0; border-bottom:1px solid var(--rule); break-inside:avoid; }
+  .job:last-child{ border-bottom:none; }
+  .job-head{ display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:.3rem 1rem; }
+  .job-role{ font-weight:700; font-size:1.02rem; }
+  .job-role .tag{ margin-left:.5rem; vertical-align:middle; }
+  .job-company{ color:var(--ink-muted); font-size:.92rem; }
+  .job-dates{
+    font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    font-size:.78rem; color:var(--ink-muted); font-variant-numeric:tabular-nums; white-space:nowrap;
+  }
+  .job-context{ font-size:.88rem; color:var(--ink-muted); margin:.3rem 0 .6rem; max-width:68ch; }
+  ul.bullets{ list-style:none; margin:.5rem 0 0; padding:0; }
+  ul.bullets li{ display:flex; gap:.6rem; margin:.4rem 0; font-size:.93rem; }
+  ul.bullets li::before{ content:"\276F"; color:var(--accent); font-weight:700; flex:none; }
+
+  .edu-row, .cert-row{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:.2rem 1rem; padding:.5rem 0; border-bottom:1px solid var(--rule); font-size:.92rem; }
+  .edu-row:last-child, .cert-row:last-child{ border-bottom:none; }
+  .edu-main, .cert-main{ font-weight:700; }
+  .edu-sub, .cert-sub{ color:var(--ink-muted); font-size:.86rem; }
+  .edu-date, .cert-date{
+    font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    font-size:.78rem; color:var(--ink-muted);
+  }
+
+  .lang-line{ font-size:.92rem; }
+  .lang-line .sep{ color:var(--rule); margin:0 .6rem; }
+
+  footer.note{
+    margin-top:2.5rem; padding-top:1rem; border-top:1px solid var(--rule);
+    font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    font-size:.7rem; color:var(--ink-muted); letter-spacing:.02em;
+  }
+
+  #ats-text-en, #ats-text-ru{ display:none; }
+  body.plain-mode .page{ display:none; }
+  body.plain-mode #ats-text-en.active, body.plain-mode #ats-text-ru.active{
+    display:block; font-family:Arial,Helvetica,sans-serif; font-size:11pt; line-height:1.55;
+    color:#111111; background:#ffffff; white-space:pre-wrap; max-width:760px; margin:0 auto; padding:1.5rem 1.5rem 4rem;
+  }
+
+  @media print{
+    :root{ --bg:#ffffff; --ink:#111111; --ink-muted:#444444; --rule:#dddddd; }
+    .toolbar, .toolbar-hint{ display:none; }
+    body{ background:#fff; }
+    .page{ padding:0; max-width:100%; }
+    a{ text-decoration:none; color:inherit; }
+    .job{ break-inside:avoid; }
+    body.plain-mode #ats-text-en.active, body.plain-mode #ats-text-ru.active{ padding:0; }
+  }
+</style>
+
+<div class="toolbar">
+  <button id="lang-toggle" type="button">Русский</button>
+  <button id="plain-toggle" type="button">Plain ATS view</button>
+  <button id="print-btn" type="button" data-en="Print / Save as PDF" data-ru="Печать / Сохранить как PDF">Print / Save as PDF</button>
+  <button id="copy-ats" type="button">Copy ATS-safe text</button>
+</div>
+<p class="toolbar-hint" data-en="This page covers both specializations — DATA and PLATFORM tags mark which track each item belongs to." data-ru="Эта страница объединяет обе специализации — метки DATA и PLATFORM показывают, к какому направлению относится пункт.">This page covers both specializations — DATA and PLATFORM tags mark which track each item belongs to.</p>
+
+<div class="page">
+  <header class="id">
+    <h1 data-en="Ruslan Ovezov" data-ru="Руслан Овезов">Ruslan Ovezov</h1>
+    <p class="role-title" data-en="Data &amp; Platform Engineer" data-ru="Дата-инженер и Platform-инженер">Data &amp; Platform Engineer</p>
+    <div class="contact">
+      <span data-en="Moscow, Russia · Open to Remote (Global)" data-ru="Москва, Россия · Открыт к удалённой работе (весь мир)">Moscow, Russia · Open to Remote (Global)</span>
+      <span class="sep">&bull;</span>
+      <a href="mailto:ovezrus@gmail.com">ovezrus@gmail.com</a>
+      <span class="sep">&bull;</span>
+      <a href="https://t.me/Rusovez" target="_blank" rel="noopener">@Rusovez</a>
+      <span class="sep">&bull;</span>
+      <a href="https://www.linkedin.com/in/ruslan-ovezov-18388138b/" target="_blank" rel="noopener">linkedin.com/in/ruslan-ovezov</a>
+    </div>
+  </header>
+
+  <section>
+    <h2 class="eyebrow"><span class="mark"></span><span data-en="Summary" data-ru="О себе">Summary</span></h2>
+    <p class="summary" data-en="Engineer with 4+ years spanning both data platform architecture and infrastructure automation — currently running two concurrent tracks: building petabyte-scale lakehouse platforms (Delta Lake, Apache Iceberg; 7+ PB, 30+ Spark pipelines) for a top-3 national retail chain, and automating Kubernetes, CI/CD, and cloud infrastructure (Terraform, Ansible, a self-managed 40-node kubeadm cluster) for a Top-5 national bank. Certified Kubernetes Administrator (CKA), Application Developer (CKAD), and Docker Certified Associate (DCA). Comfortable owning a problem end-to-end, from data pipeline design to the infrastructure it runs on." data-ru="Инженер с опытом 4+ года на стыке архитектуры платформ данных и автоматизации инфраструктуры — сейчас веду два параллельных проекта: строю lakehouse-платформы петабайтного масштаба (Delta Lake, Apache Iceberg; 7+ ПБ, 30+ пайплайнов на Spark) для розничной сети из топ-3 в России и автоматизирую Kubernetes, CI/CD и облачную инфраструктуру (Terraform, Ansible, самостоятельно администрируемый кластер kubeadm из 40 узлов) для банка из топ-5 в России. Certified Kubernetes Administrator (CKA), Application Developer (CKAD) и Docker Certified Associate (DCA). Комфортно беру на себя задачу целиком — от проектирования пайплайна данных до инфраструктуры, на которой он работает.">Engineer with 4+ years spanning both data platform architecture and infrastructure automation — currently running two concurrent tracks: building petabyte-scale lakehouse platforms (Delta Lake, Apache Iceberg; 7+ PB, 30+ Spark pipelines) for a top-3 national retail chain, and automating Kubernetes, CI/CD, and cloud infrastructure (Terraform, Ansible, a self-managed 40-node kubeadm cluster) for a Top-5 national bank. Certified Kubernetes Administrator (CKA), Application Developer (CKAD), and Docker Certified Associate (DCA). Comfortable owning a problem end-to-end, from data pipeline design to the infrastructure it runs on.</p>
+  </section>
+
+  <section class="skills">
+    <h2 class="eyebrow"><span class="mark"></span><span data-en="Skills" data-ru="Навыки">Skills</span></h2>
+    <div class="row row-both"><div class="label" data-en="Languages" data-ru="Языки программирования">Languages</div><div class="value" data-en="Python, SQL, Java/Scala (working knowledge)" data-ru="Python, SQL, Java/Scala (базовый уровень)">Python, SQL, Java/Scala (working knowledge)</div></div>
+    <div class="row row-data"><div class="label" data-en="Distributed Processing" data-ru="Распределённая обработка данных">Distributed Processing</div><div class="value">Apache Spark, Spark Streaming, Hadoop, Hive</div></div>
+    <div class="row row-data"><div class="label" data-en="Lakehouse &amp; Formats" data-ru="Lakehouse и форматы таблиц">Lakehouse &amp; Formats</div><div class="value">Delta Lake, Apache Iceberg</div></div>
+    <div class="row row-data"><div class="label" data-en="Query &amp; Warehousing" data-ru="Query-движки и хранилища">Query &amp; Warehousing</div><div class="value">Trino, Greenplum, PostgreSQL</div></div>
+    <div class="row row-data"><div class="label" data-en="Orchestration &amp; Transformation" data-ru="Оркестрация и трансформация">Orchestration &amp; Transformation</div><div class="value">Apache Airflow, dbt</div></div>
+    <div class="row row-data"><div class="label" data-en="Data Quality &amp; Lineage" data-ru="Качество и происхождение данных">Data Quality &amp; Lineage</div><div class="value">Great Expectations, pydq, Spline, ArangoDB, OMD</div></div>
+    <div class="row row-data"><div class="label" data-en="Streaming" data-ru="Потоковая обработка">Streaming</div><div class="value">Apache Kafka</div></div>
+    <div class="row row-platform"><div class="label" data-en="IaC &amp; Automation" data-ru="IaC и автоматизация">IaC &amp; Automation</div><div class="value">Terraform, Ansible, Bash</div></div>
+    <div class="row row-platform"><div class="label" data-en="Containers &amp; Orchestration" data-ru="Контейнеры и оркестрация">Containers &amp; Orchestration</div><div class="value" data-en="Docker (DCA certified), Docker Swarm, Kubernetes (CKA, CKAD certified; kubeadm), Helm" data-ru="Docker (сертификат DCA), Docker Swarm, Kubernetes (сертификаты CKA, CKAD; kubeadm), Helm">Docker (DCA certified), Docker Swarm, Kubernetes (CKA, CKAD certified; kubeadm), Helm</div></div>
+    <div class="row row-platform"><div class="label" data-en="CI/CD &amp; GitOps" data-ru="CI/CD и GitOps">CI/CD &amp; GitOps</div><div class="value">GitLab CI/CD, Jenkins, ArgoCD, SonarQube</div></div>
+    <div class="row row-both"><div class="label" data-en="Cloud" data-ru="Облако">Cloud</div><div class="value">AWS, Yandex Cloud</div></div>
+    <div class="row row-platform"><div class="label" data-en="AI/ML Infrastructure" data-ru="Инфраструктура для AI/ML">AI/ML Infrastructure</div><div class="value" data-en="Ollama, vLLM (LLM inference serving)" data-ru="Ollama, vLLM (обслуживание LLM-инференса)">Ollama, vLLM (LLM inference serving)</div></div>
+    <div class="row row-platform"><div class="label" data-en="Monitoring &amp; Observability" data-ru="Мониторинг и observability">Monitoring &amp; Observability</div><div class="value">Grafana, Loki, Prometheus</div></div>
+    <div class="row row-platform"><div class="label" data-en="Security &amp; Compliance" data-ru="Безопасность и compliance">Security &amp; Compliance</div><div class="value" data-en="Server hardening (banking-grade compliance), Ansible config management" data-ru="Харденинг серверов (банковский уровень compliance), управление конфигурацией через Ansible">Server hardening (banking-grade compliance), Ansible config management</div></div>
+    <div class="row row-data"><div class="label" data-en="APIs &amp; Serving" data-ru="API и сервисы">APIs &amp; Serving</div><div class="value">FastAPI, REST</div></div>
+    <div class="row row-data"><div class="label" data-en="BI" data-ru="BI">BI</div><div class="value">Apache Superset</div></div>
+    <div class="row row-both"><div class="label" data-en="Databases" data-ru="Базы данных">Databases</div><div class="value">PostgreSQL, Greenplum</div></div>
+    <div class="row row-both"><div class="label" data-en="Tools" data-ru="Инструменты">Tools</div><div class="value" data-en="Git, Jira, self-hosted GitLab administration, Bash, Linux" data-ru="Git, Jira, администрирование self-hosted GitLab, Bash, Linux">Git, Jira, self-hosted GitLab administration, Bash, Linux</div></div>
+  </section>
+
+  <section>
+    <h2 class="eyebrow"><span class="mark"></span><span data-en="Experience" data-ru="Опыт работы">Experience</span></h2>
+    <p class="subhead" data-en="Currently balancing two concurrent engagements:" data-ru="Сейчас веду два параллельных проекта:">Currently balancing two concurrent engagements:</p>
+
+    <div class="job">
+      <div class="job-head">
+        <div><span class="job-role" data-en="Senior Data Engineer" data-ru="Старший дата-инженер">Senior Data Engineer</span><span class="tag tag-data">DATA</span> &mdash; <span class="job-company" data-en="Magnit Tech (Top-3 National Retail Chain), Moscow (Remote)" data-ru="Magnit Tech (ритейл-сеть из топ-3 в России), Москва (удалённо)">Magnit Tech (Top-3 National Retail Chain), Moscow (Remote)</span></div>
+        <div class="job-dates" data-en="Sep 2024 – Present" data-ru="сен 2024 – наст. время">Sep 2024 – Present</div>
+      </div>
+      <p class="job-context" data-en="Own lakehouse architecture end-to-end across two parallel data platforms serving analytics and ML consumers." data-ru="Полностью отвечаю за архитектуру lakehouse на двух параллельных платформах данных для аналитики и ML.">Own lakehouse architecture end-to-end across two parallel data platforms serving analytics and ML consumers.</p>
+      <ul class="bullets">
+        <li data-en="Architected and built a Delta Lake lakehouse handling 5+ PB across batch and streaming ingestion, establishing a single trusted source of truth for analytics and ML." data-ru="Спроектировал и построил lakehouse на Delta Lake объёмом 5+ ПБ с batch- и streaming-приёмом данных, создав единый достоверный источник данных для аналитики и ML.">Architected and built a Delta Lake lakehouse handling 5+ PB across batch and streaming ingestion, establishing a single trusted source of truth for analytics and ML.</li>
+        <li data-en="Built and operate 30+ high-throughput Spark and Spark Streaming pipelines in Yandex Cloud, refreshing business-critical marts daily." data-ru="Разработал и поддерживаю 30+ высоконагруженных пайплайнов на Spark и Spark Streaming в Yandex Cloud, обеспечивая ежедневное обновление критичных для бизнеса витрин данных.">Built and operate 30+ high-throughput Spark and Spark Streaming pipelines in Yandex Cloud, refreshing business-critical marts daily.</li>
+        <li data-en="Led a second, parallel lakehouse initiative: migrated 2+ PB of legacy Hive/raw Parquet data onto Apache Iceberg, powering both scheduled batch ETL and ad hoc analytics through Trino." data-ru="Возглавил вторую, параллельную lakehouse-инициативу: перенёс 2+ ПБ legacy-данных из Hive/raw Parquet на Apache Iceberg, обеспечив как плановый batch ETL, так и ad hoc-аналитику через Trino.">Led a second, parallel lakehouse initiative: migrated 2+ PB of legacy Hive/raw Parquet data onto Apache Iceberg, powering both scheduled batch ETL and ad hoc analytics through Trino.</li>
+        <li data-en="Built and maintain dbt transformation models on the Iceberg lakehouse; engineered a Gradle-based schema/data migration tool wired into CI/CD for repeatable, auditable releases." data-ru="Разработал и поддерживаю dbt-модели трансформации данных на Iceberg-lakehouse; создал инструмент миграции схем и данных на базе Gradle, встроенный в CI/CD для воспроизводимых и аудируемых релизов.">Built and maintain dbt transformation models on the Iceberg lakehouse; engineered a Gradle-based schema/data migration tool wired into CI/CD for repeatable, auditable releases.</li>
+        <li data-en="Deployed and operate the Iceberg platform across 8 environments via ArgoCD (GitOps), enabling other teams to self-serve dashboards and analytics on governed data." data-ru="Развернул и поддерживаю Iceberg-платформу в 8 окружениях через ArgoCD (GitOps), что позволяет другим командам самостоятельно строить дашборды и аналитику на управляемых данных.">Deployed and operate the Iceberg platform across 8 environments via ArgoCD (GitOps), enabling other teams to self-serve dashboards and analytics on governed data.</li>
+        <li data-en="Introduced a Data Quality framework (Great Expectations, pydq) across core pipelines, reducing incidents caused by bad data reaching downstream consumers." data-ru="Внедрил фреймворк контроля качества данных (Great Expectations, pydq) в ключевых пайплайнах, сократив количество инцидентов из-за некачественных данных у downstream-потребителей.">Introduced a Data Quality framework (Great Expectations, pydq) across core pipelines, reducing incidents caused by bad data reaching downstream consumers.</li>
+        <li data-en="Implemented data lineage tracking (ArangoDB, Spline) across 200+ pipeline artifacts in OMD, giving stakeholders end-to-end data provenance." data-ru="Внедрил отслеживание lineage данных (ArangoDB, Spline) для 200+ артефактов пайплайнов в OMD, обеспечив стейкхолдерам сквозную прозрачность происхождения данных.">Implemented data lineage tracking (ArangoDB, Spline) across 200+ pipeline artifacts in OMD, giving stakeholders end-to-end data provenance.</li>
+        <li data-en="Migrated legacy pipelines to Kubernetes with standardized Docker images, improving resource utilization and simplifying scaling." data-ru="Перевёл legacy-пайплайны на Kubernetes со стандартизированными Docker-образами, повысив утилизацию ресурсов и упростив масштабирование.">Migrated legacy pipelines to Kubernetes with standardized Docker images, improving resource utilization and simplifying scaling.</li>
+        <li data-en="Mentor 2 data engineers through paired design sessions and joint delivery of production pipelines." data-ru="Наставляю 2 дата-инженеров через совместное проектирование и поставку production-пайплайнов.">Mentor 2 data engineers through paired design sessions and joint delivery of production pipelines.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-head">
+        <div><span class="job-role" data-en="DevOps Engineer" data-ru="DevOps-инженер">DevOps Engineer</span><span class="tag tag-platform">PLATFORM</span> &mdash; <span class="job-company" data-en="DUC (IT Consulting), Remote" data-ru="DUC (ИТ-консалтинг), удалённо">DUC (IT Consulting), Remote</span></div>
+        <div class="job-dates" data-en="Aug 2024 – Present" data-ru="авг 2024 – наст. время">Aug 2024 – Present</div>
+      </div>
+      <p class="job-context" data-en="Current engagement: Top-5 national bank (since Jun 2025), embedded in an 8-person cross-functional delivery team (1 frontend, 4 backend, 1 PM, 2 DevOps)." data-ru="Текущий проект: банк из топ-5 в России (с июня 2025), в составе кросс-функциональной команды из 8 человек (1 frontend, 4 backend, 1 PM, 2 DevOps).">Current engagement: Top-5 national bank (since Jun 2025), embedded in an 8-person cross-functional delivery team (1 frontend, 4 backend, 1 PM, 2 DevOps).</p>
+      <ul class="bullets">
+        <li data-en="Automated provisioning and lifecycle management of cloud infrastructure (Yandex Cloud, AWS) with Terraform and Ansible across 3 environments, cutting environment stand-up time from days to hours." data-ru="Автоматизировал provisioning и управление жизненным циклом облачной инфраструктуры (Yandex Cloud, AWS) с помощью Terraform и Ansible для 3 окружений, сократив время развёртывания окружения с дней до часов.">Automated provisioning and lifecycle management of cloud infrastructure (Yandex Cloud, AWS) with Terraform and Ansible across 3 environments, cutting environment stand-up time from days to hours.</li>
+        <li data-en="Hardened 40+ servers to meet banking-grade cybersecurity requirements using Ansible-driven configuration management." data-ru="Захарденил 40+ серверов под требования кибербезопасности банковского уровня с помощью Ansible.">Hardened 40+ servers to meet banking-grade cybersecurity requirements using Ansible-driven configuration management.</li>
+        <li data-en="Self-installed and administer a production Kubernetes cluster via kubeadm (1 master + 5 worker nodes) hosting 6 microservices; authored standardized Helm charts for repeatable deployments." data-ru="Самостоятельно установил и администрирую production-кластер Kubernetes через kubeadm (1 master + 5 worker-узлов) с 6 микросервисами; разработал стандартизированные Helm-чарты для воспроизводимых деплоев.">Self-installed and administer a production Kubernetes cluster via kubeadm (1 master + 5 worker nodes) hosting 6 microservices; authored standardized Helm charts for repeatable deployments.</li>
+        <li data-en="Designed and shipped 12 GitLab CI/CD pipelines automating build, test, and deployment, cutting ~25 minutes off average pipeline runtime; integrated SonarQube to enforce automated code-quality gates." data-ru="Спроектировал и внедрил 12 CI/CD-пайплайнов в GitLab для автоматизации сборки, тестирования и деплоя, сократив среднее время выполнения пайплайна на ~25 минут; интегрировал SonarQube для автоматических quality gates.">Designed and shipped 12 GitLab CI/CD pipelines automating build, test, and deployment, cutting ~25 minutes off average pipeline runtime; integrated SonarQube to enforce automated code-quality gates.</li>
+        <li data-en="Stood up GPU infrastructure for AI workloads and deployed Ollama and vLLM to serve internal LLM inference for a production application." data-ru="Развернул GPU-инфраструктуру для AI-нагрузок и внедрил Ollama и vLLM для internal LLM inference в production-приложении.">Stood up GPU infrastructure for AI workloads and deployed Ollama and vLLM to serve internal LLM inference for a production application.</li>
+        <li data-en="Built centralized observability with Grafana and Loki for logging and metrics across the platform." data-ru="Построил централизованный observability-стек на Grafana и Loki для логирования и метрик по всей платформе.">Built centralized observability with Grafana and Loki for logging and metrics across the platform.</li>
+        <li data-en="Administer the team's self-hosted GitLab instance; led capacity/sizing planning for the data platform to optimize infrastructure spend." data-ru="Администрирую self-hosted инстанс GitLab команды; проводил сайзинг и планирование ёмкости платформы данных для оптимизации затрат на инфраструктуру.">Administer the team's self-hosted GitLab instance; led capacity/sizing planning for the data platform to optimize infrastructure spend.</li>
+        <li data-en="Mentor 1 DevOps engineer through paired implementation work." data-ru="Наставляю 1 DevOps-инженера через совместную реализацию задач.">Mentor 1 DevOps engineer through paired implementation work.</li>
+      </ul>
+    </div>
+
+    <p class="subhead" data-en="Earlier roles" data-ru="Предыдущий опыт">Earlier roles</p>
+
+    <div class="job">
+      <div class="job-head">
+        <div><span class="job-role" data-en="Data Engineer" data-ru="Дата-инженер">Data Engineer</span><span class="tag tag-data">DATA</span> &mdash; <span class="job-company" data-en="Neoflex, Moscow" data-ru="Неофлекс, Москва">Neoflex, Moscow</span></div>
+        <div class="job-dates" data-en="Jun 2023 – Sep 2024" data-ru="июн 2023 – сен 2024">Jun 2023 – Sep 2024</div>
+      </div>
+      <ul class="bullets">
+        <li data-en="Built an ML feature platform automating feature launch, validation, and monitoring, shortening the path from feature definition to production." data-ru="Разработал ML-платформу для автоматизированного запуска, валидации и мониторинга признаков (features), сократив путь от определения признака до продакшена.">Built an ML feature platform automating feature launch, validation, and monitoring, shortening the path from feature definition to production.</li>
+        <li data-en="Productionized 3+ machine learning models; built a dynamic model-selection framework choosing the optimal model based on input data characteristics." data-ru="Вывел в промышленную эксплуатацию 3+ ML-моделей; разработал фреймворк динамического выбора оптимальной модели на основе характеристик входных данных.">Productionized 3+ machine learning models; built a dynamic model-selection framework choosing the optimal model based on input data characteristics.</li>
+        <li data-en="Designed and optimized Spark (Java/Scala) ETL pipelines building analytical marts on a Hadoop cluster." data-ru="Спроектировал и оптимизировал ETL-пайплайны на Spark (Java/Scala) для построения аналитических витрин на Hadoop-кластере.">Designed and optimized Spark (Java/Scala) ETL pipelines building analytical marts on a Hadoop cluster.</li>
+        <li data-en="Built and maintained Jenkins CI/CD pipelines for automated build and test." data-ru="Разработал и поддерживал CI/CD-пайплайны на Jenkins для автоматической сборки и тестирования.">Built and maintained Jenkins CI/CD pipelines for automated build and test.</li>
+        <li data-en="Acted as primary technical point of contact for the client, delivering status reports and technical documentation." data-ru="Выступал основной технической точкой контакта для заказчика, готовил отчёты о статусе и техническую документацию.">Acted as primary technical point of contact for the client, delivering status reports and technical documentation.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-head">
+        <div><span class="job-role" data-en="Data Engineer (Python)" data-ru="Дата-инженер (Python)">Data Engineer (Python)</span><span class="tag tag-data">DATA</span> &mdash; <span class="job-company" data-en="DUC, Remote" data-ru="DUC, удалённо">DUC, Remote</span></div>
+        <div class="job-dates" data-en="Feb 2022 – Aug 2024" data-ru="фев 2022 – авг 2024">Feb 2022 – Aug 2024</div>
+      </div>
+      <ul class="bullets">
+        <li data-en="Designed and built a DWH on Greenplum with a FastAPI REST layer for secure programmatic access to historical and incremental data." data-ru="Спроектировал и построил DWH на Greenplum с REST-слоем на FastAPI для безопасного программного доступа к историческим и инкрементальным данным.">Designed and built a DWH on Greenplum with a FastAPI REST layer for secure programmatic access to historical and incremental data.</li>
+        <li data-en="Developed a suite of Apache Airflow DAGs for historical backfills and incremental loads." data-ru="Разработал набор DAG в Apache Airflow для исторической и инкрементальной загрузки данных.">Developed a suite of Apache Airflow DAGs for historical backfills and incremental loads.</li>
+        <li data-en="Deployed and administered the Big Data stack from scratch (Greenplum cluster, Airflow instance); built a custom Hive audit tool (Python/bash) for tracking user activity." data-ru="Развернул и администрировал Big Data-стек с нуля (кластер Greenplum, инстанс Airflow); разработал собственный инструмент аудита Hive (Python/bash) для отслеживания активности пользователей.">Deployed and administered the Big Data stack from scratch (Greenplum cluster, Airflow instance); built a custom Hive audit tool (Python/bash) for tracking user activity.</li>
+        <li data-en="Integrated open-source LLMs (via LangChain) with internal knowledge bases, delivering a prototype semantic-search assistant." data-ru="Интегрировал open-source LLM (через LangChain) с внутренними базами знаний, реализовав прототип ассистента с семантическим поиском.">Integrated open-source LLMs (via LangChain) with internal knowledge bases, delivering a prototype semantic-search assistant.</li>
+        <li data-en="Built an end-to-end IoT pipeline (Kafka ingestion → Airflow processing → Greenplum storage) deployed on a fault-tolerant Docker Swarm cluster." data-ru="Построил сквозной IoT-пайплайн (приём через Kafka → обработка в Airflow → хранение в Greenplum), развёрнутый в отказоустойчивом кластере Docker Swarm.">Built an end-to-end IoT pipeline (Kafka ingestion → Airflow processing → Greenplum storage) deployed on a fault-tolerant Docker Swarm cluster.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-head">
+        <div><span class="job-role" data-en="Systems Analyst" data-ru="Системный аналитик">Systems Analyst</span> &mdash; <span class="job-company" data-en="HSE University, Moscow" data-ru="НИУ ВШЭ, Москва">HSE University, Moscow</span></div>
+        <div class="job-dates" data-en="Jul 2022 – Aug 2022" data-ru="июл 2022 – авг 2022">Jul 2022 – Aug 2022</div>
+      </div>
+      <ul class="bullets">
+        <li data-en="Collected, cleaned, and analyzed structured and unstructured academic datasets; automated data-prep workflows in Python/Pandas." data-ru="Собирал, очищал и анализировал структурированные и неструктурированные академические датасеты; автоматизировал подготовку данных на Python/Pandas.">Collected, cleaned, and analyzed structured and unstructured academic datasets; automated data-prep workflows in Python/Pandas.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="eyebrow"><span class="mark"></span><span data-en="Education" data-ru="Образование">Education</span></h2>
+    <div class="edu-row">
+      <div>
+        <div class="edu-main" data-en="B.S., Business Informatics — Systems Analyst qualification" data-ru="Бакалавр, Бизнес-информатика — квалификация «Системный аналитик»">B.S., Business Informatics — Systems Analyst qualification</div>
+        <div class="edu-sub" data-en="National University of Science and Technology &ldquo;MISiS&rdquo;, Moscow" data-ru="НИТУ МИСиС, Москва">National University of Science and Technology &ldquo;MISiS&rdquo;, Moscow</div>
+      </div>
+      <div class="edu-date">2023</div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="eyebrow"><span class="mark"></span><span data-en="Certifications" data-ru="Сертификаты">Certifications</span></h2>
+    <div class="cert-row"><div class="cert-main">Certified Kubernetes Administrator (CKA)</div><div class="cert-date" data-en="The Linux Foundation / CNCF, May 2026" data-ru="The Linux Foundation / CNCF, май 2026">The Linux Foundation / CNCF, May 2026</div></div>
+    <div class="cert-row"><div class="cert-main">Certified Kubernetes Application Developer (CKAD)</div><div class="cert-date" data-en="The Linux Foundation / CNCF, May 2026" data-ru="The Linux Foundation / CNCF, май 2026">The Linux Foundation / CNCF, May 2026</div></div>
+    <div class="cert-row"><div class="cert-main">Docker Certified Associate (DCA)</div><div class="cert-date" data-en="Mirantis, May 2026" data-ru="Mirantis, май 2026">Mirantis, May 2026</div></div>
+    <div class="cert-row"><div class="cert-main" data-en="Linux Administration" data-ru="Администрирование Linux">Linux Administration</div><div class="cert-date" data-en="KodeKloud (self-paced coursework), May 2026" data-ru="KodeKloud (самостоятельные курсы), май 2026">KodeKloud (self-paced coursework), May 2026</div></div>
+    <div class="cert-row"><div class="cert-main">Terraform</div><div class="cert-date" data-en="Yandex Practicum, 2025" data-ru="Яндекс Практикум, 2025">Yandex Practicum, 2025</div></div>
+    <div class="cert-row"><div class="cert-main" data-en="Advanced Apache Airflow" data-ru="Продвинутый Apache Airflow">Advanced Apache Airflow</div><div class="cert-date">Big Data School, 2023</div></div>
+  </section>
+
+  <section>
+    <h2 class="eyebrow"><span class="mark"></span><span data-en="Languages" data-ru="Языки">Languages</span></h2>
+    <p class="lang-line" data-en="Russian — Native • English — B2 (Upper-Intermediate)" data-ru="Русский — родной • Английский — B2 (выше среднего)">Russian — Native • English — B2 (Upper-Intermediate)</p>
+  </section>
+
+  <footer class="note" data-en="Personal site. Use the toolbar above to switch to a plain, single-font layout before printing to PDF, or copy the ATS-safe text directly, when submitting through Greenhouse, Workday, or Lever." data-ru="Личная страница. Перед печатью в PDF переключитесь на простой однослойный макет через панель выше, либо скопируйте текст для ATS напрямую — при отправке через Greenhouse, Workday или Lever.">Personal site. Use the toolbar above to switch to a plain, single-font layout before printing to PDF, or copy the ATS-safe text directly, when submitting through Greenhouse, Workday, or Lever.</footer>
+</div>
+
+<pre id="ats-text-en">RUSLAN OVEZOV
+Data & Platform Engineer
+
+Moscow, Russia · Open to Remote (Global)
+ovezrus@gmail.com · Telegram: @Rusovez · linkedin.com/in/ruslan-ovezov-18388138b
+
+PROFESSIONAL SUMMARY
+Engineer with 4+ years spanning both data platform architecture and
+infrastructure automation — currently running two concurrent tracks: building
+petabyte-scale lakehouse platforms (Delta Lake, Apache Iceberg; 7+ PB, 30+
+Spark pipelines) for a top-3 national retail chain, and automating Kubernetes,
+CI/CD, and cloud infrastructure (Terraform, Ansible, a self-managed 40-node
+kubeadm cluster) for a Top-5 national bank. Certified Kubernetes Administrator
+(CKA), Application Developer (CKAD), and Docker Certified Associate (DCA).
+Comfortable owning a problem end-to-end, from data pipeline design to the
+infrastructure it runs on.
+
+SKILLS
+Languages: Python, SQL, Java/Scala (working knowledge)
+Distributed Processing [DATA]: Apache Spark, Spark Streaming, Hadoop, Hive
+Lakehouse & Table Formats [DATA]: Delta Lake, Apache Iceberg
+Query Engines & Warehousing [DATA]: Trino, Greenplum, PostgreSQL
+Orchestration & Transformation [DATA]: Apache Airflow, dbt
+Data Quality & Lineage [DATA]: Great Expectations, pydq, Spline, ArangoDB, OMD
+Streaming [DATA]: Apache Kafka
+IaC & Automation [PLATFORM]: Terraform, Ansible, Bash
+Containers & Orchestration [PLATFORM]: Docker (DCA certified), Docker Swarm,
+  Kubernetes (CKA, CKAD certified; kubeadm), Helm
+CI/CD & GitOps [PLATFORM]: GitLab CI/CD, Jenkins, ArgoCD, SonarQube
+Cloud: AWS, Yandex Cloud
+AI/ML Infrastructure [PLATFORM]: Ollama, vLLM (LLM inference serving)
+Monitoring & Observability [PLATFORM]: Grafana, Loki, Prometheus
+Security & Compliance [PLATFORM]: Server hardening (banking-grade compliance),
+  Ansible config management
+APIs & Serving [DATA]: FastAPI, REST
+BI [DATA]: Apache Superset
+Databases: PostgreSQL, Greenplum
+Tools: Git, Jira, self-hosted GitLab administration, Bash, Linux
+
+EXPERIENCE
+
+Currently balancing two concurrent engagements:
+
+Senior Data Engineer [DATA] — Magnit Tech (Top-3 National Retail Chain), Moscow, Russia (Remote)
+Sep 2024 – Present
+Own lakehouse architecture end-to-end across two parallel data platforms serving
+analytics and ML consumers.
+• Architected and built a Delta Lake lakehouse handling 5+ PB across batch and
+  streaming ingestion, establishing a single trusted source of truth for
+  analytics and ML.
+• Built and operate 30+ high-throughput Spark and Spark Streaming pipelines in
+  Yandex Cloud, refreshing business-critical marts daily.
+• Led a second, parallel lakehouse initiative: migrated 2+ PB of legacy
+  Hive/raw Parquet data onto Apache Iceberg, powering both scheduled batch ETL
+  and ad hoc analytics through Trino.
+• Built and maintain dbt transformation models on the Iceberg lakehouse;
+  engineered a Gradle-based schema/data migration tool wired into CI/CD for
+  repeatable, auditable releases.
+• Deployed and operate the Iceberg platform across 8 environments via ArgoCD
+  (GitOps), enabling other teams to self-serve dashboards and analytics on
+  governed data.
+• Introduced a Data Quality framework (Great Expectations, pydq) across core
+  pipelines, reducing incidents caused by bad data reaching downstream
+  consumers.
+• Implemented data lineage tracking (ArangoDB, Spline) across 200+ pipeline
+  artifacts in OMD, giving stakeholders end-to-end data provenance.
+• Migrated legacy pipelines to Kubernetes with standardized Docker images,
+  improving resource utilization and simplifying scaling.
+• Mentor 2 data engineers through paired design sessions and joint delivery of
+  production pipelines.
+
+DevOps Engineer [PLATFORM] — DUC (IT Consulting), Remote
+Aug 2024 – Present
+Current engagement: Top-5 national bank (since Jun 2025), embedded in an
+8-person cross-functional delivery team (1 frontend, 4 backend, 1 PM,
+2 DevOps).
+• Automated provisioning and lifecycle management of cloud infrastructure
+  (Yandex Cloud, AWS) with Terraform and Ansible across 3 environments,
+  cutting environment stand-up time from days to hours.
+• Hardened 40+ servers to meet banking-grade cybersecurity requirements using
+  Ansible-driven configuration management.
+• Self-installed and administer a production Kubernetes cluster via kubeadm
+  (1 master + 5 worker nodes) hosting 6 microservices; authored standardized
+  Helm charts for repeatable deployments.
+• Designed and shipped 12 GitLab CI/CD pipelines automating build, test, and
+  deployment, cutting ~25 minutes off average pipeline runtime; integrated
+  SonarQube to enforce automated code-quality gates.
+• Stood up GPU infrastructure for AI workloads and deployed Ollama and vLLM to
+  serve internal LLM inference for a production application.
+• Built centralized observability with Grafana and Loki for logging and
+  metrics across the platform.
+• Administer the team's self-hosted GitLab instance; led capacity/sizing
+  planning for the data platform to optimize infrastructure spend.
+• Mentor 1 DevOps engineer through paired implementation work.
+
+Earlier roles:
+
+Data Engineer [DATA] — Neoflex, Moscow, Russia
+Jun 2023 – Sep 2024
+• Built an ML feature platform automating feature launch, validation, and
+  monitoring, shortening the path from feature definition to production.
+• Productionized 3+ machine learning models; built a dynamic model-selection
+  framework choosing the optimal model based on input data characteristics.
+• Designed and optimized Spark (Java/Scala) ETL pipelines building analytical
+  marts on a Hadoop cluster.
+• Built and maintained Jenkins CI/CD pipelines for automated build and test.
+• Acted as primary technical point of contact for the client, delivering
+  status reports and technical documentation.
+
+Data Engineer (Python) [DATA] — DUC, Remote
+Feb 2022 – Aug 2024
+• Designed and built a DWH on Greenplum with a FastAPI REST layer for secure
+  programmatic access to historical and incremental data.
+• Developed a suite of Apache Airflow DAGs for historical backfills and
+  incremental loads.
+• Deployed and administered the Big Data stack from scratch (Greenplum
+  cluster, Airflow instance); built a custom Hive audit tool (Python/bash) for
+  tracking user activity.
+• Integrated open-source LLMs (via LangChain) with internal knowledge bases,
+  delivering a prototype semantic-search assistant.
+• Built an end-to-end IoT pipeline (Kafka ingestion → Airflow processing →
+  Greenplum storage) deployed on a fault-tolerant Docker Swarm cluster.
+
+Systems Analyst — HSE University, Moscow, Russia
+Jul 2022 – Aug 2022
+• Collected, cleaned, and analyzed structured and unstructured academic
+  datasets; automated data-prep workflows in Python/Pandas.
+
+EDUCATION
+B.S., Business Informatics — Systems Analyst qualification
+National University of Science and Technology "MISiS", Moscow, Russia — 2023
+
+CERTIFICATIONS
+Certified Kubernetes Administrator (CKA) — The Linux Foundation / CNCF, May 2026
+Certified Kubernetes Application Developer (CKAD) — The Linux Foundation / CNCF, May 2026
+Docker Certified Associate (DCA) — Mirantis, May 2026
+Linux Administration — KodeKloud (self-paced coursework), May 2026
+Terraform — Yandex Practicum, 2025
+Advanced Apache Airflow — Big Data School, 2023
+
+LANGUAGES
+Russian — Native · English — B2 (Upper-Intermediate)</pre>
+
+<pre id="ats-text-ru">РУСЛАН ОВЕЗОВ
+Дата-инженер и Platform-инженер
+
+Москва, Россия · Открыт к удалённой работе (весь мир)
+ovezrus@gmail.com · Telegram: @Rusovez · linkedin.com/in/ruslan-ovezov-18388138b
+
+ПРОФЕССИОНАЛЬНОЕ РЕЗЮМЕ
+Инженер с опытом 4+ года на стыке архитектуры платформ данных и автоматизации
+инфраструктуры — сейчас веду два параллельных проекта: строю lakehouse-
+платформы петабайтного масштаба (Delta Lake, Apache Iceberg; 7+ ПБ, 30+
+пайплайнов на Spark) для розничной сети из топ-3 в России и автоматизирую
+Kubernetes, CI/CD и облачную инфраструктуру (Terraform, Ansible, самостоятельно
+администрируемый кластер kubeadm из 40 узлов) для банка из топ-5 в России.
+Certified Kubernetes Administrator (CKA), Application Developer (CKAD) и
+Docker Certified Associate (DCA). Комфортно беру на себя задачу целиком — от
+проектирования пайплайна данных до инфраструктуры, на которой он работает.
+
+НАВЫКИ
+Языки программирования: Python, SQL, Java/Scala (базовый уровень)
+Распределённая обработка данных [DATA]: Apache Spark, Spark Streaming, Hadoop, Hive
+Lakehouse и форматы таблиц [DATA]: Delta Lake, Apache Iceberg
+Query-движки и хранилища [DATA]: Trino, Greenplum, PostgreSQL
+Оркестрация и трансформация [DATA]: Apache Airflow, dbt
+Качество и происхождение данных [DATA]: Great Expectations, pydq, Spline, ArangoDB, OMD
+Потоковая обработка [DATA]: Apache Kafka
+IaC и автоматизация [PLATFORM]: Terraform, Ansible, Bash
+Контейнеры и оркестрация [PLATFORM]: Docker (сертификат DCA), Docker Swarm,
+  Kubernetes (сертификаты CKA, CKAD; kubeadm), Helm
+CI/CD и GitOps [PLATFORM]: GitLab CI/CD, Jenkins, ArgoCD, SonarQube
+Облако: AWS, Yandex Cloud
+Инфраструктура для AI/ML [PLATFORM]: Ollama, vLLM (обслуживание LLM-инференса)
+Мониторинг и observability [PLATFORM]: Grafana, Loki, Prometheus
+Безопасность и compliance [PLATFORM]: Харденинг серверов (банковский уровень
+  compliance), управление конфигурацией через Ansible
+API и сервисы [DATA]: FastAPI, REST
+BI [DATA]: Apache Superset
+Базы данных: PostgreSQL, Greenplum
+Инструменты: Git, Jira, администрирование self-hosted GitLab, Bash, Linux
+
+ОПЫТ РАБОТЫ
+
+Сейчас веду два параллельных проекта:
+
+Старший дата-инженер [DATA] — Magnit Tech (ритейл-сеть из топ-3 в России), Москва (удалённо)
+сен 2024 – наст. время
+Полностью отвечаю за архитектуру lakehouse на двух параллельных платформах
+данных для аналитики и ML.
+• Спроектировал и построил lakehouse на Delta Lake объёмом 5+ ПБ с batch- и
+  streaming-приёмом данных, создав единый достоверный источник данных для
+  аналитики и ML.
+• Разработал и поддерживаю 30+ высоконагруженных пайплайнов на Spark и Spark
+  Streaming в Yandex Cloud, обеспечивая ежедневное обновление критичных для
+  бизнеса витрин данных.
+• Возглавил вторую, параллельную lakehouse-инициативу: перенёс 2+ ПБ
+  legacy-данных из Hive/raw Parquet на Apache Iceberg, обеспечив как плановый
+  batch ETL, так и ad hoc-аналитику через Trino.
+• Разработал и поддерживаю dbt-модели трансформации данных на
+  Iceberg-lakehouse; создал инструмент миграции схем и данных на базе Gradle,
+  встроенный в CI/CD для воспроизводимых и аудируемых релизов.
+• Развернул и поддерживаю Iceberg-платформу в 8 окружениях через ArgoCD
+  (GitOps), что позволяет другим командам самостоятельно строить дашборды и
+  аналитику на управляемых данных.
+• Внедрил фреймворк контроля качества данных (Great Expectations, pydq) в
+  ключевых пайплайнах, сократив количество инцидентов из-за некачественных
+  данных у downstream-потребителей.
+• Внедрил отслеживание lineage данных (ArangoDB, Spline) для 200+ артефактов
+  пайплайнов в OMD, обеспечив стейкхолдерам сквозную прозрачность
+  происхождения данных.
+• Перевёл legacy-пайплайны на Kubernetes со стандартизированными
+  Docker-образами, повысив утилизацию ресурсов и упростив масштабирование.
+• Наставляю 2 дата-инженеров через совместное проектирование и поставку
+  production-пайплайнов.
+
+DevOps-инженер [PLATFORM] — DUC (ИТ-консалтинг), удалённо
+авг 2024 – наст. время
+Текущий проект: банк из топ-5 в России (с июня 2025), в составе
+кросс-функциональной команды из 8 человек (1 frontend, 4 backend, 1 PM,
+2 DevOps).
+• Автоматизировал provisioning и управление жизненным циклом облачной
+  инфраструктуры (Yandex Cloud, AWS) с помощью Terraform и Ansible для 3
+  окружений, сократив время развёртывания окружения с дней до часов.
+• Захарденил 40+ серверов под требования кибербезопасности банковского
+  уровня с помощью Ansible.
+• Самостоятельно установил и администрирую production-кластер Kubernetes
+  через kubeadm (1 master + 5 worker-узлов) с 6 микросервисами; разработал
+  стандартизированные Helm-чарты для воспроизводимых деплоев.
+• Спроектировал и внедрил 12 CI/CD-пайплайнов в GitLab для автоматизации
+  сборки, тестирования и деплоя, сократив среднее время выполнения
+  пайплайна на ~25 минут; интегрировал SonarQube для автоматических quality
+  gates.
+• Развернул GPU-инфраструктуру для AI-нагрузок и внедрил Ollama и vLLM для
+  internal LLM inference в production-приложении.
+• Построил централизованный observability-стек на Grafana и Loki для
+  логирования и метрик по всей платформе.
+• Администрирую self-hosted инстанс GitLab команды; проводил сайзинг и
+  планирование ёмкости платформы данных для оптимизации затрат на
+  инфраструктуру.
+• Наставляю 1 DevOps-инженера через совместную реализацию задач.
+
+Предыдущий опыт:
+
+Дата-инженер [DATA] — Неофлекс, Москва
+июн 2023 – сен 2024
+• Разработал ML-платформу для автоматизированного запуска, валидации и
+  мониторинга признаков (features), сократив путь от определения признака до
+  продакшена.
+• Вывел в промышленную эксплуатацию 3+ ML-моделей; разработал фреймворк
+  динамического выбора оптимальной модели на основе характеристик входных
+  данных.
+• Спроектировал и оптимизировал ETL-пайплайны на Spark (Java/Scala) для
+  построения аналитических витрин на Hadoop-кластере.
+• Разработал и поддерживал CI/CD-пайплайны на Jenkins для автоматической
+  сборки и тестирования.
+• Выступал основной технической точкой контакта для заказчика, готовил
+  отчёты о статусе и техническую документацию.
+
+Дата-инженер (Python) [DATA] — DUC, удалённо
+фев 2022 – авг 2024
+• Спроектировал и построил DWH на Greenplum с REST-слоем на FastAPI для
+  безопасного программного доступа к историческим и инкрементальным данным.
+• Разработал набор DAG в Apache Airflow для исторической и инкрементальной
+  загрузки данных.
+• Развернул и администрировал Big Data-стек с нуля (кластер Greenplum,
+  инстанс Airflow); разработал собственный инструмент аудита Hive
+  (Python/bash) для отслеживания активности пользователей.
+• Интегрировал open-source LLM (через LangChain) с внутренними базами знаний,
+  реализовав прототип ассистента с семантическим поиском.
+• Построил сквозной IoT-пайплайн (приём через Kafka → обработка в Airflow →
+  хранение в Greenplum), развёрнутый в отказоустойчивом кластере Docker Swarm.
+
+Системный аналитик — НИУ ВШЭ, Москва
+июл 2022 – авг 2022
+• Собирал, очищал и анализировал структурированные и неструктурированные
+  академические датасеты; автоматизировал подготовку данных на Python/Pandas.
+
+ОБРАЗОВАНИЕ
+Бакалавр, Бизнес-информатика — квалификация «Системный аналитик»
+НИТУ МИСиС, Москва — 2023
+
+СЕРТИФИКАТЫ
+Certified Kubernetes Administrator (CKA) — The Linux Foundation / CNCF, май 2026
+Certified Kubernetes Application Developer (CKAD) — The Linux Foundation / CNCF, май 2026
+Docker Certified Associate (DCA) — Mirantis, май 2026
+Администрирование Linux — KodeKloud (самостоятельные курсы), май 2026
+Terraform — Яндекс Практикум, 2025
+Продвинутый Apache Airflow — Big Data School, 2023
+
+ЯЗЫКИ
+Русский — родной · Английский — B2 (выше среднего)</pre>
+
+<script>
+(function(){
+  var state = { lang:'en', plain:false };
+  var langBtn = document.getElementById('lang-toggle');
+  var plainBtn = document.getElementById('plain-toggle');
+  var copyBtn = document.getElementById('copy-ats');
+  var printBtn = document.getElementById('print-btn');
+  var atsEn = document.getElementById('ats-text-en');
+  var atsRu = document.getElementById('ats-text-ru');
+
+  var labels = {
+    plain: { en:'Plain ATS view', ru:'Простой вид для ATS' },
+    styled: { en:'View styled resume', ru:'Показать оформленное резюме' },
+    copy: { en:'Copy ATS-safe text', ru:'Копировать текст для ATS' },
+    copied: { en:'Copied', ru:'Скопировано' },
+    lang: { en:'Русский', ru:'English' }
+  };
+
+  function render(){
+    document.querySelectorAll('[data-en]').forEach(function(el){
+      var v = el.dataset[state.lang];
+      if (v !== undefined) el.textContent = v;
+    });
+    document.documentElement.lang = state.lang;
+    langBtn.textContent = labels.lang[state.lang];
+    plainBtn.textContent = state.plain ? labels.styled[state.lang] : labels.plain[state.lang];
+    document.body.classList.toggle('plain-mode', state.plain);
+    atsEn.classList.toggle('active', state.plain && state.lang === 'en');
+    atsRu.classList.toggle('active', state.plain && state.lang === 'ru');
+    if (!copyBtn.disabled) copyBtn.textContent = labels.copy[state.lang];
+  }
+
+  langBtn.addEventListener('click', function(){ state.lang = state.lang === 'en' ? 'ru' : 'en'; render(); });
+  plainBtn.addEventListener('click', function(){ state.plain = !state.plain; render(); });
+  printBtn.addEventListener('click', function(){ window.print(); });
+  copyBtn.addEventListener('click', function(){
+    var src = state.lang === 'en' ? atsEn : atsRu;
+    var text = src.textContent.trim();
+    var done = function(){
+      copyBtn.textContent = labels.copied[state.lang];
+      copyBtn.disabled = true;
+      setTimeout(function(){ copyBtn.disabled = false; render(); }, 1800);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(done);
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try{ document.execCommand('copy'); }catch(e){}
+      document.body.removeChild(ta);
+      done();
+    }
+  });
+
+  render();
+})();
+</script>
