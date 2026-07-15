@@ -6,44 +6,77 @@
     --ink-muted:#8B949E;
     --accent:#58A6FF;
     --accent-deep:#79C0FF;
+    --purple:#A78BFA;
     --good:#3FB950;
     --rule:#30363D;
     --tag-data:#D9A15C;
     --tag-platform:#79C0FF;
     --chip-bg:rgba(88,166,255,0.08);
+    --glow-1:rgba(88,166,255,.12); --glow-2:rgba(167,139,250,.09); --glow-3:rgba(63,185,80,.05);
+    --sheen:rgba(255,255,255,.05);
   }
   @media (prefers-color-scheme: light){
     :root{
       --bg:#FFFFFF; --panel:#F6F8FA; --ink:#1F2328; --ink-muted:#59636E; --accent:#0969DA; --accent-deep:#0550AE;
-      --good:#1A7F37; --rule:#D0D7DE; --tag-data:#9A6A1F; --tag-platform:#0969DA; --chip-bg:rgba(9,105,218,0.06);
+      --purple:#7C5CE0; --good:#1A7F37; --rule:#D0D7DE; --tag-data:#9A6A1F; --tag-platform:#0969DA; --chip-bg:rgba(9,105,218,0.06);
+      --glow-1:rgba(9,105,218,.06); --glow-2:rgba(124,92,224,.05); --glow-3:rgba(26,127,55,.04);
+      --sheen:rgba(9,105,218,.04);
     }
   }
   :root[data-theme="dark"]{
     --bg:#0D1117; --panel:#161B22; --ink:#C9D1D9; --ink-muted:#8B949E; --accent:#58A6FF; --accent-deep:#79C0FF;
-    --good:#3FB950; --rule:#30363D; --tag-data:#D9A15C; --tag-platform:#79C0FF; --chip-bg:rgba(88,166,255,0.08);
+    --purple:#A78BFA; --good:#3FB950; --rule:#30363D; --tag-data:#D9A15C; --tag-platform:#79C0FF; --chip-bg:rgba(88,166,255,0.08);
+    --glow-1:rgba(88,166,255,.12); --glow-2:rgba(167,139,250,.09); --glow-3:rgba(63,185,80,.05);
+    --sheen:rgba(255,255,255,.05);
   }
   :root[data-theme="light"]{
     --bg:#FFFFFF; --panel:#F6F8FA; --ink:#1F2328; --ink-muted:#59636E; --accent:#0969DA; --accent-deep:#0550AE;
-    --good:#1A7F37; --rule:#D0D7DE; --tag-data:#9A6A1F; --tag-platform:#0969DA; --chip-bg:rgba(9,105,218,0.06);
+    --purple:#7C5CE0; --good:#1A7F37; --rule:#D0D7DE; --tag-data:#9A6A1F; --tag-platform:#0969DA; --chip-bg:rgba(9,105,218,0.06);
+    --glow-1:rgba(9,105,218,.06); --glow-2:rgba(124,92,224,.05); --glow-3:rgba(26,127,55,.04);
+    --sheen:rgba(9,105,218,.04);
   }
   @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
   *{ box-sizing:border-box; }
   html,body{ margin:0; padding:0; }
   body{
-    background:var(--bg); color:var(--ink);
+    background-color:var(--bg); color:var(--ink);
+    background-image:
+      radial-gradient(at 12% 88%, var(--glow-1) 0%, transparent 55%),
+      radial-gradient(at 88% 8%, var(--glow-2) 0%, transparent 50%),
+      radial-gradient(at 50% 45%, var(--glow-3) 0%, transparent 60%);
+    background-attachment:fixed;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
     font-size:15.5px; line-height:1.65; -webkit-font-smoothing:antialiased;
+    animation:fade-in-body .5s ease both;
   }
+  @keyframes fade-in-body{ from{ opacity:0; } to{ opacity:1; } }
+  @keyframes fade-up{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
+  .page > header, .page > section, .page > footer{ animation:fade-up .55s ease both; }
+  .page > header{ animation-delay:.04s; }
+  .page > section:nth-of-type(1){ animation-delay:.13s; }
+  .page > section:nth-of-type(2){ animation-delay:.22s; }
+  .page > section:nth-of-type(3){ animation-delay:.31s; }
+  .page > section:nth-of-type(4){ animation-delay:.4s; }
+  .page > section:nth-of-type(5){ animation-delay:.46s; }
+  .page > section:nth-of-type(6){ animation-delay:.52s; }
+  .page > footer{ animation-delay:.58s; }
   .mono{ font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace; }
   .page{ max-width:780px; margin:0 auto; padding:2.75rem 1.5rem 5rem; }
-  .toolbar{ display:flex; justify-content:flex-end; flex-wrap:wrap; gap:.6rem; max-width:780px; margin:0 auto; padding:1rem 1.5rem 0; }
+  .toolbar{
+    position:sticky; top:0; z-index:10; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:.6rem;
+    padding:1rem 1.5rem .85rem; margin-bottom:-.85rem;
+    background:color-mix(in srgb, var(--bg) 78%, transparent);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--rule);
+  }
+  .toolbar-inner{ max-width:780px; margin:0 auto; display:flex; justify-content:flex-end; flex-wrap:wrap; gap:.6rem; width:100%; }
   .toolbar button{
     font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
     font-size:.72rem; letter-spacing:.03em; text-transform:uppercase;
     background:var(--panel); color:var(--ink); border:1px solid var(--rule); border-radius:6px;
-    padding:.5rem .85rem; cursor:pointer; transition:border-color .15s ease, color .15s ease;
+    padding:.5rem .85rem; cursor:pointer; transition:border-color .15s ease, color .15s ease, transform .15s ease;
   }
-  .toolbar button:hover{ border-color:var(--accent); color:var(--accent-deep); }
+  .toolbar button:hover{ border-color:var(--accent); color:var(--accent-deep); transform:translateY(-1px); }
   .toolbar button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
   .toolbar-hint{ max-width:780px; margin:.5rem auto 0; padding:0 1.5rem; font-size:.74rem; color:var(--ink-muted); text-align:right; }
 
@@ -51,6 +84,15 @@
   h1{
     font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
     font-size:2.1rem; font-weight:700; letter-spacing:-0.01em; margin:0 0 .25rem; text-wrap:balance;
+    background:linear-gradient(100deg, var(--ink) 15%, var(--accent) 45%, var(--purple) 60%, var(--ink) 85%);
+    background-size:250% 100%;
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    animation:shimmer-name 7s ease-in-out infinite;
+  }
+  @keyframes shimmer-name{
+    0%{ background-position:0% 50%; }
+    50%{ background-position:100% 50%; }
+    100%{ background-position:0% 50%; }
   }
   .role-title{
     font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
@@ -81,9 +123,23 @@
 
   .stats{ display:flex; flex-wrap:wrap; gap:.75rem; margin-top:1.2rem; }
   .stat{
-    flex:1 1 130px; background:var(--panel); border:1px solid var(--rule); border-radius:8px;
-    padding:.85rem 1rem; min-width:120px;
+    position:relative; overflow:hidden; flex:1 1 130px; background:var(--panel); border:1px solid var(--rule); border-radius:8px;
+    padding:.95rem 1rem .85rem; min-width:120px; box-shadow:0 8px 20px -14px rgba(0,0,0,.6);
+    transition:transform .2s ease, box-shadow .2s ease;
   }
+  .stat::before{ content:""; position:absolute; top:0; left:0; right:0; height:3px; }
+  .stat-1::before{ background:linear-gradient(90deg, var(--accent), var(--accent-deep)); }
+  .stat-2::before{ background:linear-gradient(90deg, var(--tag-platform), #67e8f9); }
+  .stat-3::before{ background:linear-gradient(90deg, var(--purple), #c084fc); }
+  .stat-4::before{ background:linear-gradient(90deg, var(--good), #4ade80); }
+  .stat::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(115deg, transparent 30%, var(--sheen) 50%, transparent 70%);
+    background-size:250% 250%; background-position:-150% -150%;
+    transition:background-position .8s ease;
+  }
+  .stat:hover{ transform:translateY(-2px); box-shadow:0 12px 24px -14px rgba(0,0,0,.7); }
+  .stat:hover::after{ background-position:150% 150%; }
   .stat .num{ font-family:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace; font-size:1.4rem; font-weight:700; color:var(--accent); font-variant-numeric:tabular-nums; }
   .stat .cap{ font-size:.74rem; color:var(--ink-muted); margin-top:.15rem; }
 
@@ -123,11 +179,23 @@
     font-size:.78rem; color:var(--ink-muted); font-variant-numeric:tabular-nums; white-space:nowrap;
     display:flex; align-items:center; gap:.4rem;
   }
-  .job-dates .dot{ width:.42rem; height:.42rem; border-radius:50%; background:var(--good); display:inline-block; }
+  .job-dates .dot{ width:.42rem; height:.42rem; border-radius:50%; background:var(--good); display:inline-block; animation:pulse-dot 2.2s ease-in-out infinite; }
+  @keyframes pulse-dot{
+    0%,100%{ box-shadow:0 0 0 0 rgba(63,185,80,.55); }
+    50%{ box-shadow:0 0 0 5px rgba(63,185,80,0); }
+  }
   .job-context{ font-size:.88rem; color:var(--ink-muted); margin:.35rem 0 .6rem; max-width:68ch; }
   ul.bullets{ list-style:none; margin:.5rem 0 0; padding:0; }
   ul.bullets li{ display:flex; gap:.6rem; margin:.45rem 0; font-size:.93rem; }
   ul.bullets li::before{ content:"\276F"; color:var(--accent); font-weight:700; flex:none; }
+  .job{ position:relative; overflow:hidden; }
+  .job::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(115deg, transparent 35%, var(--sheen) 50%, transparent 65%);
+    background-size:250% 250%; background-position:-150% -150%;
+    transition:background-position .9s ease;
+  }
+  .job:hover::after{ background-position:150% 150%; }
 
   .edu-row, .cert-row{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:.2rem 1rem; padding:.6rem 0; border-bottom:1px solid var(--rule); font-size:.92rem; }
   .edu-row:last-child, .cert-row:last-child{ border-bottom:none; }
@@ -155,22 +223,28 @@
   }
 
   @media print{
-    :root{ --bg:#ffffff; --panel:#ffffff; --ink:#111111; --ink-muted:#444444; --rule:#dddddd; --accent:#111111; }
+    :root{ --bg:#ffffff; --panel:#ffffff; --ink:#111111; --ink-muted:#444444; --rule:#dddddd; --accent:#111111; --purple:#111111; --good:#111111; }
     .toolbar, .toolbar-hint{ display:none; }
-    body{ background:#fff; }
+    body{ background:#fff; background-image:none; animation:none; }
+    .page > header, .page > section, .page > footer{ animation:none; opacity:1; transform:none; }
     .page{ padding:0; max-width:100%; }
     a{ text-decoration:none; color:inherit; }
     .job{ break-inside:avoid; }
+    .job::after, .stat::after{ display:none; }
+    h1{ background:none; -webkit-text-fill-color:#111111; color:#111111; animation:none; }
     .chip{ background:#fff; }
+    .job-dates .dot{ animation:none; }
     body.plain-mode #ats-text-en.active, body.plain-mode #ats-text-ru.active{ padding:0; }
   }
 </style>
 
 <div class="toolbar">
-  <button id="lang-toggle" type="button">Русский</button>
-  <button id="plain-toggle" type="button">Plain ATS view</button>
-  <button id="print-btn" type="button" data-en="Print / Save as PDF" data-ru="Печать / Сохранить как PDF">Print / Save as PDF</button>
-  <button id="copy-ats" type="button">Copy ATS-safe text</button>
+  <div class="toolbar-inner">
+    <button id="lang-toggle" type="button">Русский</button>
+    <button id="plain-toggle" type="button">Plain ATS view</button>
+    <button id="print-btn" type="button" data-en="Print / Save as PDF" data-ru="Печать / Сохранить как PDF">Print / Save as PDF</button>
+    <button id="copy-ats" type="button">Copy ATS-safe text</button>
+  </div>
 </div>
 <p class="toolbar-hint" data-en="DATA and PLATFORM tags mark which track each item belongs to." data-ru="Метки DATA и PLATFORM показывают, к какому направлению относится пункт.">DATA and PLATFORM tags mark which track each item belongs to.</p>
 
@@ -193,10 +267,10 @@
     <h2 class="eyebrow"><span data-en="Summary" data-ru="О себе">Summary</span></h2>
     <p class="summary" data-en="Engineer with 4+ years spanning both data platform architecture and infrastructure automation — currently running two concurrent tracks: building petabyte-scale lakehouse platforms (Delta Lake, Apache Iceberg; 7+ PB, 30+ Spark pipelines) for a top-3 national retail chain, and automating Kubernetes, CI/CD, and cloud infrastructure (Terraform, Ansible, a self-managed 40-node kubeadm cluster) for a Top-5 national bank. Certified Kubernetes Administrator (CKA), Application Developer (CKAD), and Docker Certified Associate (DCA). Comfortable owning a problem end-to-end, from data pipeline design to the infrastructure it runs on." data-ru="Инженер с опытом 4+ года на стыке архитектуры платформ данных и автоматизации инфраструктуры — сейчас веду два параллельных проекта: строю lakehouse-платформы петабайтного масштаба (Delta Lake, Apache Iceberg; 7+ ПБ, 30+ пайплайнов на Spark) для розничной сети из топ-3 в России и автоматизирую Kubernetes, CI/CD и облачную инфраструктуру (Terraform, Ansible, самостоятельно администрируемый кластер kubeadm из 40 узлов) для банка из топ-5 в России. Certified Kubernetes Administrator (CKA), Application Developer (CKAD) и Docker Certified Associate (DCA). Комфортно беру на себя задачу целиком — от проектирования пайплайна данных до инфраструктуры, на которой он работает.">Engineer with 4+ years spanning both data platform architecture and infrastructure automation — currently running two concurrent tracks: building petabyte-scale lakehouse platforms (Delta Lake, Apache Iceberg; 7+ PB, 30+ Spark pipelines) for a top-3 national retail chain, and automating Kubernetes, CI/CD, and cloud infrastructure (Terraform, Ansible, a self-managed 40-node kubeadm cluster) for a Top-5 national bank. Certified Kubernetes Administrator (CKA), Application Developer (CKAD), and Docker Certified Associate (DCA). Comfortable owning a problem end-to-end, from data pipeline design to the infrastructure it runs on.</p>
     <div class="stats">
-      <div class="stat"><div class="num">7+ PB</div><div class="cap" data-en="lakehouse data managed" data-ru="данных под управлением (lakehouse)">lakehouse data managed</div></div>
-      <div class="stat"><div class="num">40</div><div class="cap" data-en="node K8s cluster (banking)" data-ru="узлов в K8s-кластере (банк)">node K8s cluster (banking)</div></div>
-      <div class="stat"><div class="num">3</div><div class="cap" data-en="platform certifications" data-ru="платформенных сертификата">platform certifications</div></div>
-      <div class="stat"><div class="num">4+</div><div class="cap" data-en="years experience" data-ru="года опыта">years experience</div></div>
+      <div class="stat stat-1"><div class="num">7+ PB</div><div class="cap" data-en="lakehouse data managed" data-ru="данных под управлением (lakehouse)">lakehouse data managed</div></div>
+      <div class="stat stat-2"><div class="num">40</div><div class="cap" data-en="node K8s cluster (banking)" data-ru="узлов в K8s-кластере (банк)">node K8s cluster (banking)</div></div>
+      <div class="stat stat-3"><div class="num">3</div><div class="cap" data-en="platform certifications" data-ru="платформенных сертификата">platform certifications</div></div>
+      <div class="stat stat-4"><div class="num">4+</div><div class="cap" data-en="years experience" data-ru="года опыта">years experience</div></div>
     </div>
   </section>
 
